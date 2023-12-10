@@ -1,0 +1,24 @@
+package "sySym"
+version "1.0"
+purpose "Simulate a simple symmetric communication channel"
+description "This program simulates a communication channel between two programs.
+It allows to test communication protocols and simulate packet loss and corruption."
+
+section "Simulation parameters"
+
+option "messages"   m "Number of messages to send" int optional default="10"
+
+option "loss"       l "Packet loss probability" float optional default="0.0"
+
+option "corruption" c "Packet corruption probability" float optional default="0.0"
+
+option "delay"      d "Average delay between packets" float optional default="0.0"
+
+option "seed"       s "Seed for the random number generator" int optional default="42"
+
+section "Logging parameters"
+
+option "loglevel"   L "Logging level" int optional default="0"
+
+option "logfile"    - "If set, the logging will also be written to this file" string optional typestr="filename"
+
