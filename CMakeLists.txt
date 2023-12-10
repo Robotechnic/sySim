@@ -1,26 +1,31 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(sySym)
+project(sySim)
 
 set(CMAKE_C_STANDARD 11)
 set(EXPORT_COMPILE_COMMANDS ON)
 
+include_directories(
+	src
+	lib
+)
+
+include(lib/CMakeLists.txt)
 
 add_executable(
-	sySym
+	sySim
 	src/argparse/argparse.c
 	src/main.c
 )
 
-target_include_directories(
-	sySym
+target_link_libraries(
+	sySim
 	PRIVATE
-		src
-		lib
+		sySimLib
 )
 
 target_compile_options(
-	sySym
+	sySim
 	PRIVATE
 		-Wall
 		-Wextra
@@ -59,13 +64,13 @@ if(GENGETOPT_EXE)
 	add_custom_target(
 		genopt
 		COMMAND ${GENGETOPT_EXE} 
-			--input=${PROJECT_SOURCE_DIR}/src/sySym.ggo 
+			--input=${PROJECT_SOURCE_DIR}/src/sySim.ggo 
 			--file-name=argparse
 			--output-dir=${PROJECT_SOURCE_DIR}/src/argparse
 		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-		SOURCES ${PROJECT_SOURCE_DIR}/src/sySym.ggo
+		SOURCES ${PROJECT_SOURCE_DIR}/src/sySim.ggo
 	)
-	add_dependencies(sySym genopt)
+	add_dependencies(sySim genopt)
 else()
 	message(STATUS "gengetopt not found.")
 endif()

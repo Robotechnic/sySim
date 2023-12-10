@@ -1,4 +1,4 @@
-package "sySym"
+package "sySim"
 version "1.0"
 purpose "Simulate a simple symmetric communication channel"
 description "This program simulates a communication channel between two programs.
@@ -18,7 +18,8 @@ option "seed"       s "Seed for the random number generator" int optional defaul
 
 section "Logging parameters"
 
-option "loglevel"   L "Logging level" int optional default="0"
+option "loglevel"   L "Logging level" int optional default="2"
 
 option "logfile"    - "If set, the logging will also be written to this file" string optional typestr="filename"
 
+option "quiet"      q "If set, the program won't print anything to stdout" flag off
