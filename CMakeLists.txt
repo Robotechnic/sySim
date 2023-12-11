@@ -12,33 +12,14 @@ include_directories(
 
 include(lib/CMakeLists.txt)
 
-add_executable(
-	sySim
-	src/argparse/argparse.c
-	src/main.c
-)
-
-target_link_libraries(
-	sySim
-	PRIVATE
-		sySimLib
-)
-
-target_compile_options(
-	sySim
-	PRIVATE
-		-Wall
-		-Wextra
-		-Wpedantic
-		-Werror
-)
-
 # remove compiler warnings from argparse.c
 set_source_files_properties(
 	src/argparse/argparse.c
 	PROPERTIES
 		COMPILE_FLAGS "-w"
 )
+
+include(protocols/CMakeLists.txt)
 
 # clang-format support
 find_program(CLANG_FORMAT_EXE NAMES "clang-format")
@@ -70,7 +51,9 @@ if(GENGETOPT_EXE)
 		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 		SOURCES ${PROJECT_SOURCE_DIR}/src/sySim.ggo
 	)
-	add_dependencies(sySim genopt)
+	foreach(pro ${protocolsNames})
+		add_dependencies(${pro} genopt)
+	endforeach()
 else()
 	message(STATUS "gengetopt not found.")
 endif()
