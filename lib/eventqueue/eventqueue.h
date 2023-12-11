@@ -20,6 +20,12 @@ typedef struct event {
 void eventqueue_init(size_t capacity);
 
 /**
+ * @brief free the event queue
+ * 
+ */
+void eventqueue_free();
+
+/**
  * @brief push a new send event to the event queue
  * 
  * @param delay the delay before the event is activated

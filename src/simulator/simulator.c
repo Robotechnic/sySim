@@ -61,4 +61,5 @@ void run_simulation(size_t messages, float corruption, float loss, float delay, 
 
     A_free(A_state);
 	B_free(B_state);
+    eventqueue_free();
 }

@@ -20,7 +20,7 @@ void eventqueue_init(size_t capacity) {
 	event_queue = priority_queue_new(compare_event, capacity);
 }
 
-void eventqueue_destroy() {
+void eventqueue_free() {
 	priority_queue_free(event_queue, free_event);
 	event_queue = NULL;
 }
