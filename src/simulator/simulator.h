@@ -1,14 +1,14 @@
 #ifndef SIMULATOR_H
 #define SIMULATOR_H
 
-#include <stdlib.h>
 #include "logger/log.h"
 #include "package/package.h"
+#include <stdlib.h>
 
 /**
  * @brief Run a new simulation on the given parameters. It uses the function that defines the
  * protocol in protocols
- * 
+ *
  * @param messages the number of messages to be sent
  * @param corruption the probability of a package being corrupted
  * @param loss the probability of a package being lost
