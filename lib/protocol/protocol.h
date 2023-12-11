@@ -7,7 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef enum sendto_e { A, B } sendto_t;
+typedef enum sendto_e { A, B } sendto;
+
+char sendto_to_char(sendto sdt);
 
 /**
  * @brief This function is called once at the beginning of the simulation.
@@ -74,13 +76,13 @@ void B_timeout(void *state);
  *
  * @param state the current state
  */
-void A_destroy(void *state);
+void A_free(void *state);
 
 /**
  * @brief This function is called when the simulation is over.
  *
  * @param state the current state
  */
-void B_destroy(void *state);
+void B_free(void *state);
 
 #endif // PROTOCOL_H

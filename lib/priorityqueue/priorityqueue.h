@@ -8,6 +8,7 @@
 typedef struct priority_queue PriorityQueue;
 typedef bool (*compare_function)(void *, void *);
 typedef void (*free_function)(void *);
+typedef void (*print_function)(void *);
 
 /**
  * @brief Initialize a new priority queue.
@@ -64,5 +65,13 @@ size_t priority_queue_size(const PriorityQueue *queue);
  * @return true if the priority queue is empty
  */
 bool priority_queue_empty(const PriorityQueue *queue);
+
+/**
+ * @brief Print the priority queue.
+ * 
+ * @param queue the priority queue
+ * @param print_data the function used to print the data
+ */
+void priority_queue_print(const PriorityQueue *queue, print_function print_data);
 
 #endif // PRIORITYQUEUE_H

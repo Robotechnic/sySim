@@ -3,6 +3,8 @@
 
 #include "logger/log.h"
 #include "package/package.h"
+#include "priorityqueue/priorityqueue.h"
+#include "protocol/protocol.h"
 #include <stdlib.h>
 
 /**

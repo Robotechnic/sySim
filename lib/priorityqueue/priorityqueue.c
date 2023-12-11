@@ -93,4 +93,20 @@ void *priority_queue_pop(PriorityQueue *queue) {
 	unpack(queue, 0);
 	return element;
 }
-	
+
+void priority_queue_print(const PriorityQueue *queue, print_function print_data) {
+    printf("PriorityQueue: size = %zu, capacity = %zu\n", queue->size, queue->capacity);
+	for (size_t i = 0; i < queue->size; i++) {
+		printf("  ");
+		print_data(queue->data[i]);
+		printf("\n");
+	}
+}
+
+size_t priority_queue_size(const PriorityQueue *queue) {
+	return queue->size;
+}
+
+bool priority_queue_empty(const PriorityQueue *queue) {
+	return queue->size == 0;
+}

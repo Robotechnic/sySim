@@ -18,6 +18,11 @@ bool check_args(struct gengetopt_args_info *args_info, FILE *log_file) {
         }
     }
 
+	if (args_info->messages_arg < 1) {
+		fprintf(stderr, "Number of messages must be at least 1\n");
+		return false;
+	}
+
     return true;
 }
 

@@ -16,6 +16,8 @@ option "delay"      d "Average delay between packets" float optional default="10
 
 option "seed"       s "Seed for the random number generator" int optional default="42"
 
+option "bidirectional" b "If set, the channel will be bidirectional" flag off
+
 section "Logging parameters"
 
 option "loglevel"   L "Logging level" int optional default="2"
