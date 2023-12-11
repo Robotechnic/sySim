@@ -7,9 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef enum sendto_e { A, B } sendto;
+typedef enum side_e { A, B } side;
 
-char sendto_to_char(sendto sdt);
+char sendto_to_char(side sdt);
 
 /**
  * @brief This function is called once at the beginning of the simulation.
@@ -47,7 +47,7 @@ void B_send(void *state, Payload *payload);
  * @param state the current state
  * @param packet the received packet
  */
-void A_recv(void *state, Package *packet);
+void A_recv(void *state, Packet *packet);
 
 /**
  * @brief This function is called when the simulation receives a packet from the other side.
@@ -55,7 +55,7 @@ void A_recv(void *state, Package *packet);
  * @param state the current state
  * @param packet the received packet
  */
-void B_recv(void *state, Package *packet);
+void B_recv(void *state, Packet *packet);
 
 /**
  * @brief This function is called when the timeout of the A side is reached.

@@ -5,4 +5,5 @@ add_library(
 	${CMAKE_CURRENT_LIST_DIR}/priorityqueue/priorityqueue.c
 	${CMAKE_CURRENT_LIST_DIR}/protocol/protocol.c
 	${CMAKE_CURRENT_LIST_DIR}/time/time.c
+	${CMAKE_CURRENT_LIST_DIR}/eventqueue/eventqueue.c
 )

@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DEFINE_PACKAGE(name, fields)                                                               \
+#define PAYLOAD_SIZE 20
+
+#define DEFINE_PACKET(name, fields)                                                                \
     struct name##_t {                                                                              \
         size_t size;                                                                               \
         Payload *payload;                                                                          \
@@ -20,26 +22,23 @@
     }
 
 typedef struct payload_t {
-    size_t size;
-    char *data;
+    char data[PAYLOAD_SIZE];
 } Payload;
 
-struct package_t {
+struct packet_t {
     size_t size;
     Payload *payload;
 };
 
-typedef struct package_t Package;
+typedef struct packet_t Packet;
 
-Package *package_new(int id, Payload *payload);
-void package_free(Package *package);
+Packet *package_new(int id, Payload *payload);
+void package_free(Packet *package);
 
-Payload *payload_new(size_t size, char *data);
+Payload *payload_new(const char data[PAYLOAD_SIZE]);
 Payload *encode_int(int value);
-Payload *encode_string(char *value);
 
-char *decode_string(Payload *payload);
-int decode_int(Payload *payload);
+int decode_int(const Payload *payload);
 
 void payload_free(Payload *payload);
 

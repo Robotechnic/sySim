@@ -49,6 +49,7 @@ if(GENGETOPT_EXE)
 			--file-name=argparse
 			--output-dir=${PROJECT_SOURCE_DIR}/src/argparse
 		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+		DEPENDS ${PROJECT_SOURCE_DIR}/src/sySim.ggo
 		SOURCES ${PROJECT_SOURCE_DIR}/src/sySim.ggo
 	)
 	foreach(pro ${protocolsNames})

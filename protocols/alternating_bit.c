@@ -1,6 +1,6 @@
 #include "protocol/protocol.h"
 
-DEFINE_PACKAGE(OneBitProtocol, {
+DEFINE_PACKET(OneBitProtocol, {
     int acknum;
     int seqnum;
 })
@@ -12,7 +12,7 @@ typedef struct state_t {
     int seqnum;
     int acknum;
     bool waiting_ack;
-    Package *current_packet;
+    Packet *current_packet;
 } State;
 
 void *A_init() {
@@ -32,6 +32,7 @@ void *B_init() {
 void A_send(void *state, Payload *payload) {
     (void)payload;
     (void)state;
+	log("A_send");
 }
 
 void B_send(void *state, Payload *payload) {
@@ -39,12 +40,12 @@ void B_send(void *state, Payload *payload) {
     (void)state;
 }
 
-void A_recv(void *state, Package *packet) {
+void A_recv(void *state, Packet *packet) {
     (void)packet;
     (void)state;
 }
 
-void B_recv(void *state, Package *packet) {
+void B_recv(void *state, Packet *packet) {
     (void)packet;
     (void)state;
 }

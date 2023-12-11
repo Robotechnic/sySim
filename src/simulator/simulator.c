@@ -1,117 +1,64 @@
 #include "simulator/simulator.h"
 
-typedef struct event {
-	enum {
-		TIMEOUT_EVENT,
-		SEND_EVENT,
-		RECEIVE_EVENT
-	} type;
-	double activation_time;
-	sendto sdt;
-	void *data;
-} Event;
-
-bool compare_event(void *a, void *b) {
-	Event *event_a = (Event *) a;
-	Event *event_b = (Event *) b;
-	return event_a->activation_time < event_b->activation_time;
-}
-
-Event *send_event(double activation_time, sendto sdt, void *data) {
-	Event *event = malloc(sizeof(Event));
-	event->type = SEND_EVENT;
-	event->activation_time = activation_time;
-	event->sdt = sdt;
-	event->data = data;
-	return event;
-}
-
-Event *receive_event(double activation_time, sendto sdt, void *data) {
-	Event *event = malloc(sizeof(Event));
-	event->type = RECEIVE_EVENT;
-	event->activation_time = activation_time;
-	event->sdt = sdt;
-	event->data = data;
-	return event;
-}
-
-Event *timeout_event(double activation_time, sendto sdt) {
-	Event *event = malloc(sizeof(Event));
-	event->type = TIMEOUT_EVENT;
-	event->activation_time = activation_time;
-	event->sdt = sdt;
-	event->data = NULL;
-	return event;
-}
-
-void print_event(void *event) {
-	const Event *e = (Event *) event;
-	switch (e->type) {
-		case TIMEOUT_EVENT:
-			printf("TIMEOUT_EVENT ");
-			break;
-		case SEND_EVENT:
-			printf("SEND_EVENT    ");
-			break;
-		case RECEIVE_EVENT:
-			printf("RECEIVE_EVENT ");
-			break;
-	}
-	printf("(%c) at %f\n", sendto_to_char(e->sdt), e->activation_time);
-}
-
-void run_simulation(size_t messages, float corruption, float loss, float delay, int seed) {
+void run_simulation(size_t messages, float corruption, float loss, float delay, int seed, bool bidirectional) {
     srand(seed);
     (void) messages;
 	(void) corruption;
 	(void) loss;
-	(void) delay;
 
 	reset_time();
-	
-	PriorityQueue *event_queue = priority_queue_new(compare_event, 10);
-	sendto sdt = A;
+	eventqueue_init(messages * 3);
+
+	side sdt = A;
 	for (unsigned i = 0; i < messages; i++) {
-		priority_queue_push(event_queue, send_event(i * delay, sdt, NULL));
-		sdt = (sdt == A) ? B : A;
+		char message[20];
+		snprintf(message, 20, "%d", i);
+		new_from_layer5_event((float)i * delay, sdt, payload_new(message));
+		if (bidirectional) {
+			sdt = (sdt == A) ? B : A;
+		}
 	}
 
 	void *A_state = A_init();
 	void *B_state = B_init();
 	Event *event = NULL;
 
-	while (!priority_queue_empty(event_queue)) {
-		event = priority_queue_pop(event_queue);
-		if (event->activation_time > get_time()) {
-			update_time(event->activation_time);
-		}
+    while (!event_queue_empty()) {
+        event = event_queue_pop_event();
 		switch (event->type) {
 			case TIMEOUT_EVENT:
+				log_trace("TIMEOUT_EVENT <- %s", sendto_to_char(event->sdt));
 				if (event->sdt == A) {
 					A_timeout(A_state);
 				} else {
 					B_timeout(B_state);
 				}
 				break;
-			case SEND_EVENT:
+			case FROM_LAYER5:
+				log_trace("FROM_LAYER5 -> %s", sendto_to_char(event->sdt));
 				if (event->sdt == A) {
 					A_send(A_state, event->data);
 				} else {
 					B_send(B_state, event->data);
 				}
 				break;
-			case RECEIVE_EVENT:
+			case FROM_LAYER3:
+				log_trace("FROM_LAYER3 <- %s", sendto_to_char(event->sdt));
 				if (event->sdt == A) {
 					A_recv(A_state, event->data);
 				} else {
 					B_recv(B_state, event->data);
 				}
-				free(event->data);
+				payload_free(event->data);
+				break;
+			case TO_LAYER_5:
+				log_trace("TO_LAYER_5 -> %s", sendto_to_char(event->sdt));
+				log_trace("\tMessage: %s", (char *)event->data);
 				break;
 		}
 		free(event);
-	}
+    }
 
-	A_free(A_state);
+    A_free(A_state);
 	B_free(B_state);
 }

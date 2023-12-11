@@ -3,7 +3,7 @@
 
 #include "logger/log.h"
 #include "package/package.h"
-#include "priorityqueue/priorityqueue.h"
+#include "eventqueue/eventqueue.h"
 #include "protocol/protocol.h"
 #include "time/time.h"
 #include <stdlib.h>
@@ -18,6 +18,6 @@
  * @param delay the mean delay to send a package
  * @param seed the random seed
  */
-void run_simulation(size_t messages, float corruption, float loss, float delay, int seed);
+void run_simulation(size_t messages, float corruption, float loss, float delay, int seed, bool bidirectional);
 
 #endif // SIMULATOR_H
