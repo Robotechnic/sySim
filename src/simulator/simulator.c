@@ -60,18 +60,18 @@ void print_event(void *event) {
 	printf("(%c) at %f\n", sendto_to_char(e->sdt), e->activation_time);
 }
 
-void run_simulation(int messages, float corruption, float loss, float delay, int seed) {
+void run_simulation(size_t messages, float corruption, float loss, float delay, int seed) {
     srand(seed);
     (void) messages;
 	(void) corruption;
 	(void) loss;
 	(void) delay;
 
-	double tick = 0;
+	reset_time();
 	
 	PriorityQueue *event_queue = priority_queue_new(compare_event, 10);
 	sendto sdt = A;
-	for (int i = 0; i < messages; i++) {
+	for (unsigned i = 0; i < messages; i++) {
 		priority_queue_push(event_queue, send_event(i * delay, sdt, NULL));
 		sdt = (sdt == A) ? B : A;
 	}
@@ -82,8 +82,8 @@ void run_simulation(int messages, float corruption, float loss, float delay, int
 
 	while (!priority_queue_empty(event_queue)) {
 		event = priority_queue_pop(event_queue);
-		if (event->activation_time > tick) {
-			tick = event->activation_time;
+		if (event->activation_time > get_time()) {
+			update_time(event->activation_time);
 		}
 		switch (event->type) {
 			case TIMEOUT_EVENT:
@@ -106,6 +106,7 @@ void run_simulation(int messages, float corruption, float loss, float delay, int
 				} else {
 					B_recv(B_state, event->data);
 				}
+				free(event->data);
 				break;
 		}
 		free(event);
