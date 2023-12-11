@@ -1,5 +1,6 @@
 #include "argparse/argparse.h"
 #include "logger/log.h"
+#include "simulator/simulator.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -36,6 +37,8 @@ int main(int argc, char **argv) {
 
     log_set_level(args_info.loglevel_arg);
     log_set_quiet(args_info.quiet_flag);
+
+	run_simulation(args_info.messages_arg, args_info.corruption_arg, args_info.loss_arg, args_info.delay_arg, args_info.seed_arg);
 
     if (log_file != NULL) {
         fclose(log_file);

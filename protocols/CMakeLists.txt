@@ -7,6 +7,7 @@ foreach(protocol ${protocols})
 		${projectName}
 		${CMAKE_CURRENT_SOURCE_DIR}/src/main.c
 		${CMAKE_CURRENT_SOURCE_DIR}/src/argparse/argparse.c
+		${CMAKE_CURRENT_SOURCE_DIR}/src/simulator/simulator.c
 		${CMAKE_CURRENT_LIST_DIR}/${protocol}
 	)
 	target_link_libraries(

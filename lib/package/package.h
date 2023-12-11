@@ -7,11 +7,17 @@
 
 #define DEFINE_PACKAGE(name, fields)                                                               \
     struct name##_t {                                                                              \
-        int id;                                                                                    \
+        size_t size;                                                                               \
         Payload *payload;                                                                          \
         struct fields;                                                                             \
     };                                                                                             \
-    typedef struct name##_t name;
+    typedef struct name##_t name;                                                                  \
+    name *name##_new(Payload *payload) {                                                           \
+        name *package = malloc(sizeof(name));                                                      \
+        package->size = sizeof(name);                                                              \
+        package->payload = payload;                                                                \
+        return package;                                                                            \
+    }
 
 typedef struct payload_t {
     size_t size;
@@ -19,7 +25,7 @@ typedef struct payload_t {
 } Payload;
 
 struct package_t {
-    int id;
+    size_t size;
     Payload *payload;
 };
 
