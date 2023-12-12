@@ -7,4 +7,5 @@ add_library(
 	${CMAKE_CURRENT_LIST_DIR}/time/time.c
 	${CMAKE_CURRENT_LIST_DIR}/eventqueue/eventqueue.c
 	${CMAKE_CURRENT_LIST_DIR}/softwareinterface/softwareinterface.c
+	${CMAKE_CURRENT_LIST_DIR}/queue/queue.c
 )
