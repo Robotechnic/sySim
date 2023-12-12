@@ -123,7 +123,11 @@ void log_log(int level, const char *file, int line, const char *fmt, ...) {
     lock();
 
     if (!L.quiet && level >= L.level) {
-        init_event(&ev, stderr);
+		if (level == LOG_ERROR || level == LOG_FATAL) {
+        	init_event(&ev, stderr);
+		} else {
+			init_event(&ev, stdout);
+		}
         va_start(ev.ap, fmt);
         stdout_callback(&ev);
         va_end(ev.ap);
