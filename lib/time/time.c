@@ -7,7 +7,7 @@ double get_time() {
 }
 
 void update_time(double delta) {
-	_time += delta;
+	_time = delta;
 }
 
 void reset_time() {

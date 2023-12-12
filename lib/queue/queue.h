@@ -14,7 +14,7 @@ typedef void (*queue_free_fn)(void *);
  * @param size the initial capacity of the queue
  * @return Queue* the new queue
  */
-Queue *queue_create(size_t size);
+Queue *queue_new(size_t size);
 
 /**
  * @brief free the queue

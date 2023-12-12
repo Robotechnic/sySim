@@ -14,6 +14,11 @@ Payload *encode_int(int value) {
 	return payload_new(data);
 }
 
+Payload *enpty_payload() {
+	char data[PAYLOAD_SIZE] = "";
+    return payload_new(data);
+}
+
 int decode_int(const Payload *payload) {
 	int value = 0;
 	for (int i = 0; i < sizeof(int); i++) {
@@ -25,4 +30,8 @@ int decode_int(const Payload *payload) {
 
 void payload_free(Payload *payload) {
 	free(payload);
+}
+
+void package_free(Packet *package) {
+	free(package);
 }

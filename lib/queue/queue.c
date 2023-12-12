@@ -7,8 +7,8 @@ typedef struct queue {
 	size_t capacity;
 } Queue;
 
-Queue *new_queue(size_t capacity) {
-	Queue *queue = malloc(sizeof(Queue));
+Queue *queue_new(size_t capacity) {
+    Queue *queue = malloc(sizeof(Queue));
 	queue->queue = malloc(sizeof(void *) * capacity);
 	queue->front = 0;
 	queue->size = 0;

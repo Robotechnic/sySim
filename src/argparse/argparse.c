@@ -41,12 +41,14 @@ const char *gengetopt_args_info_help[] = {
   "  -l, --loss=FLOAT        Packet loss probability  (default=`0.0')",
   "  -c, --corruption=FLOAT  Packet corruption probability  (default=`0.0')",
   "  -d, --delay=FLOAT       Average delay between packets  (default=`10.0')",
+  "  -t, --maxTime=FLOAT     Maximum time to run the simulation  (default=`500.0')",
   "  -s, --seed=INT          Seed for the random number generator  (default=`42')",
   "  -b, --bidirectional     If set, the channel will be bidirectional\n                            (default=off)",
   "\nLogging parameters:",
   "  -L, --loglevel=INT      Logging level  (default=`2')",
   "      --logfile=filename  If set, the logging will also be written to this file",
   "  -q, --quiet             If set, the program won't print anything to stdout\n                            (default=off)",
+  "  -C, --color             If set, the program will use colors in the output\n                            (default=off)",
     0
 };
 
@@ -79,11 +81,13 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->loss_given = 0 ;
   args_info->corruption_given = 0 ;
   args_info->delay_given = 0 ;
+  args_info->maxTime_given = 0 ;
   args_info->seed_given = 0 ;
   args_info->bidirectional_given = 0 ;
   args_info->loglevel_given = 0 ;
   args_info->logfile_given = 0 ;
   args_info->quiet_given = 0 ;
+  args_info->color_given = 0 ;
 }
 
 static
@@ -98,6 +102,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->corruption_orig = NULL;
   args_info->delay_arg = 10.0;
   args_info->delay_orig = NULL;
+  args_info->maxTime_arg = 500.0;
+  args_info->maxTime_orig = NULL;
   args_info->seed_arg = 42;
   args_info->seed_orig = NULL;
   args_info->bidirectional_flag = 0;
@@ -106,6 +112,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->logfile_arg = NULL;
   args_info->logfile_orig = NULL;
   args_info->quiet_flag = 0;
+  args_info->color_flag = 0;
   
 }
 
@@ -120,11 +127,13 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->loss_help = gengetopt_args_info_help[4] ;
   args_info->corruption_help = gengetopt_args_info_help[5] ;
   args_info->delay_help = gengetopt_args_info_help[6] ;
-  args_info->seed_help = gengetopt_args_info_help[7] ;
-  args_info->bidirectional_help = gengetopt_args_info_help[8] ;
-  args_info->loglevel_help = gengetopt_args_info_help[10] ;
-  args_info->logfile_help = gengetopt_args_info_help[11] ;
-  args_info->quiet_help = gengetopt_args_info_help[12] ;
+  args_info->maxTime_help = gengetopt_args_info_help[7] ;
+  args_info->seed_help = gengetopt_args_info_help[8] ;
+  args_info->bidirectional_help = gengetopt_args_info_help[9] ;
+  args_info->loglevel_help = gengetopt_args_info_help[11] ;
+  args_info->logfile_help = gengetopt_args_info_help[12] ;
+  args_info->quiet_help = gengetopt_args_info_help[13] ;
+  args_info->color_help = gengetopt_args_info_help[14] ;
   
 }
 
@@ -218,6 +227,7 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->loss_orig));
   free_string_field (&(args_info->corruption_orig));
   free_string_field (&(args_info->delay_orig));
+  free_string_field (&(args_info->maxTime_orig));
   free_string_field (&(args_info->seed_orig));
   free_string_field (&(args_info->loglevel_orig));
   free_string_field (&(args_info->logfile_arg));
@@ -264,6 +274,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "corruption", args_info->corruption_orig, 0);
   if (args_info->delay_given)
     write_into_file(outfile, "delay", args_info->delay_orig, 0);
+  if (args_info->maxTime_given)
+    write_into_file(outfile, "maxTime", args_info->maxTime_orig, 0);
   if (args_info->seed_given)
     write_into_file(outfile, "seed", args_info->seed_orig, 0);
   if (args_info->bidirectional_given)
@@ -274,6 +286,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "logfile", args_info->logfile_orig, 0);
   if (args_info->quiet_given)
     write_into_file(outfile, "quiet", 0, 0 );
+  if (args_info->color_given)
+    write_into_file(outfile, "color", 0, 0 );
   
 
   i = EXIT_SUCCESS;
@@ -544,15 +558,17 @@ cmdline_parser_internal (
         { "loss",	1, NULL, 'l' },
         { "corruption",	1, NULL, 'c' },
         { "delay",	1, NULL, 'd' },
+        { "maxTime",	1, NULL, 't' },
         { "seed",	1, NULL, 's' },
         { "bidirectional",	0, NULL, 'b' },
         { "loglevel",	1, NULL, 'L' },
         { "logfile",	1, NULL, 0 },
         { "quiet",	0, NULL, 'q' },
+        { "color",	0, NULL, 'C' },
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVm:l:c:d:s:bL:q", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVm:l:c:d:t:s:bL:qC", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -616,6 +632,18 @@ cmdline_parser_internal (
             goto failure;
         
           break;
+        case 't':	/* Maximum time to run the simulation.  */
+        
+        
+          if (update_arg( (void *)&(args_info->maxTime_arg), 
+               &(args_info->maxTime_orig), &(args_info->maxTime_given),
+              &(local_args_info.maxTime_given), optarg, 0, "500.0", ARG_FLOAT,
+              check_ambiguity, override, 0, 0,
+              "maxTime", 't',
+              additional_error))
+            goto failure;
+        
+          break;
         case 's':	/* Seed for the random number generator.  */
         
         
@@ -656,6 +684,16 @@ cmdline_parser_internal (
           if (update_arg((void *)&(args_info->quiet_flag), 0, &(args_info->quiet_given),
               &(local_args_info.quiet_given), optarg, 0, 0, ARG_FLAG,
               check_ambiguity, override, 1, 0, "quiet", 'q',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'C':	/* If set, the program will use colors in the output.  */
+        
+        
+          if (update_arg((void *)&(args_info->color_flag), 0, &(args_info->color_given),
+              &(local_args_info.color_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "color", 'C',
               additional_error))
             goto failure;
         

@@ -51,6 +51,9 @@ struct gengetopt_args_info
   float delay_arg;	/**< @brief Average delay between packets (default='10.0').  */
   char * delay_orig;	/**< @brief Average delay between packets original value given at command line.  */
   const char *delay_help; /**< @brief Average delay between packets help description.  */
+  float maxTime_arg;	/**< @brief Maximum time to run the simulation (default='500.0').  */
+  char * maxTime_orig;	/**< @brief Maximum time to run the simulation original value given at command line.  */
+  const char *maxTime_help; /**< @brief Maximum time to run the simulation help description.  */
   int seed_arg;	/**< @brief Seed for the random number generator (default='42').  */
   char * seed_orig;	/**< @brief Seed for the random number generator original value given at command line.  */
   const char *seed_help; /**< @brief Seed for the random number generator help description.  */
@@ -64,6 +67,8 @@ struct gengetopt_args_info
   const char *logfile_help; /**< @brief If set, the logging will also be written to this file help description.  */
   int quiet_flag;	/**< @brief If set, the program won't print anything to stdout (default=off).  */
   const char *quiet_help; /**< @brief If set, the program won't print anything to stdout help description.  */
+  int color_flag;	/**< @brief If set, the program will use colors in the output (default=off).  */
+  const char *color_help; /**< @brief If set, the program will use colors in the output help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -71,11 +76,13 @@ struct gengetopt_args_info
   unsigned int loss_given ;	/**< @brief Whether loss was given.  */
   unsigned int corruption_given ;	/**< @brief Whether corruption was given.  */
   unsigned int delay_given ;	/**< @brief Whether delay was given.  */
+  unsigned int maxTime_given ;	/**< @brief Whether maxTime was given.  */
   unsigned int seed_given ;	/**< @brief Whether seed was given.  */
   unsigned int bidirectional_given ;	/**< @brief Whether bidirectional was given.  */
   unsigned int loglevel_given ;	/**< @brief Whether loglevel was given.  */
   unsigned int logfile_given ;	/**< @brief Whether logfile was given.  */
   unsigned int quiet_given ;	/**< @brief Whether quiet was given.  */
+  unsigned int color_given ;	/**< @brief Whether color was given.  */
 
 } ;
 

@@ -1,15 +1,15 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 
+#include "protocol/side.h"
 #include "logger/log.h"
 #include "package/package.h"
+#include "softwareinterface/softwareinterface.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
-typedef enum side_e { A, B } side;
-
-char sendto_to_char(side sdt);
+char side_to_char(side sdt);
 
 /**
  * @brief This function is called once at the beginning of the simulation.
@@ -47,7 +47,7 @@ void B_send(void *state, Payload *payload);
  * @param state the current state
  * @param packet the received packet
  */
-void A_recv(void *state, Packet *packet);
+void A_recv(void *state, const Packet *packet);
 
 /**
  * @brief This function is called when the simulation receives a packet from the other side.
@@ -55,21 +55,21 @@ void A_recv(void *state, Packet *packet);
  * @param state the current state
  * @param packet the received packet
  */
-void B_recv(void *state, Packet *packet);
+void B_recv(void *state, const Packet *packet);
 
 /**
  * @brief This function is called when the timeout of the A side is reached.
  *
  * @param state the current state
  */
-void A_timeout(void *state);
+void A_timer_inerrupt(void *state);
 
 /**
  * @brief This function is called when the timeout of the B side is reached.
  *
  * @param state the current state
  */
-void B_timeout(void *state);
+void B_timer_interrupt(void *state);
 
 /**
  * @brief This function is called when the simulation is over.

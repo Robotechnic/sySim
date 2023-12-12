@@ -14,6 +14,8 @@ option "corruption" c "Packet corruption probability" float optional default="0.
 
 option "delay"      d "Average delay between packets" float optional default="10.0"
 
+option "maxTime"	t "Maximum time to run the simulation" float optional default="500.0"
+
 option "seed"       s "Seed for the random number generator" int optional default="42"
 
 option "bidirectional" b "If set, the channel will be bidirectional" flag off
@@ -25,3 +27,5 @@ option "loglevel"   L "Logging level" int optional default="2"
 option "logfile"    - "If set, the logging will also be written to this file" string optional typestr="filename"
 
 option "quiet"      q "If set, the program won't print anything to stdout" flag off
+
+option "color"      C "If set, the program will use colors in the output" flag off

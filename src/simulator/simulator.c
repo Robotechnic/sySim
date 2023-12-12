@@ -1,7 +1,14 @@
 #include "simulator/simulator.h"
 
-void run_simulation(size_t messages, float corruption, float loss, float delay, int seed, bool bidirectional) {
+void run_simulation(size_t messages, float corruption, float loss, float delay, int seed, bool bidirectional, double max_time) {
     srand(seed);
+
+	log_debug("Running simulation with:");
+	log_debug("\tMessages:   %zu", messages);
+	log_debug("\tCorruption: %.2f", corruption);
+	log_debug("\tLoss:       %.2f", loss);
+	log_debug("\tDelay:      %.2fs", delay);
+	log_debug("\tSeed:       %d", seed);
 
 	reset_time();
 	eventqueue_init(messages * 3);
@@ -10,31 +17,32 @@ void run_simulation(size_t messages, float corruption, float loss, float delay, 
 
 	side sdt = A;
 	for (unsigned i = 0; i < messages; i++) {
-		char message[20];
+        char message[20];
 		snprintf(message, 20, "%d", i);
-		new_from_layer5_event((float)i * delay, sdt, payload_new(message));
+        Payload *payload = payload_new(message);
+        new_from_layer5_event((float)i * delay, sdt, payload);
 		if (bidirectional) {
 			sdt = (sdt == A) ? B : A;
 		}
-	}
+    }
 
-	void *A_state = A_init();
+    void *A_state = A_init();
 	void *B_state = B_init();
 	Event *event = NULL;
 
-    while (!event_queue_empty()) {
+    while (!event_queue_empty() && get_time() < max_time) {
         event = event_queue_pop_event();
 		switch (event->type) {
 			case TIMER_INTERUPT:
-				log_trace("TIMER_INTERUPT <- %s", sendto_to_char(event->sdt));
+				log_trace("TIMER_INTERUPT <- %c", side_to_char(event->sdt));
 				if (event->sdt == A) {
-					A_timeout(A_state);
+					A_timer_inerrupt(A_state);
 				} else {
-					B_timeout(B_state);
+					B_timer_interrupt(B_state);
 				}
 				break;
 			case FROM_LAYER5:
-				log_trace("FROM_LAYER5 -> %s", sendto_to_char(event->sdt));
+				log_trace("FROM_LAYER5 -> %c", side_to_char(event->sdt));
 				if (event->sdt == A) {
 					A_send(A_state, event->data);
 				} else {
@@ -42,21 +50,25 @@ void run_simulation(size_t messages, float corruption, float loss, float delay, 
 				}
 				break;
 			case FROM_LAYER3:
-				log_trace("FROM_LAYER3 <- %s", sendto_to_char(event->sdt));
+				log_trace("FROM_LAYER3 <- %c", side_to_char(event->sdt));
 				if (event->sdt == A) {
 					A_recv(A_state, event->data);
 				} else {
 					B_recv(B_state, event->data);
 				}
-				payload_free(event->data);
 				break;
 			case TO_LAYER_5:
-				log_trace("TO_LAYER_5 -> %s", sendto_to_char(event->sdt));
+				log_trace("TO_LAYER_5 -> %s", side_to_char(event->sdt));
 				log_trace("\tMessage: %s", (char *)event->data);
+				free(event->data);
 				break;
 		}
 		free(event);
     }
+
+	if (get_time() > max_time) {
+		log_error("Simulation timed out");
+	}
 
     A_free(A_state);
 	B_free(B_state);

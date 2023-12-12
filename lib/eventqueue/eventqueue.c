@@ -77,7 +77,7 @@ void print_event(void *event) {
 		case TO_LAYER_5:
 			printf("TO_LAYER_5 ");
     }
-    printf("(%c) at %f\n", sendto_to_char(e->sdt), e->activation_time);
+    printf("(%c) at %f\n", side_to_char(e->sdt), e->activation_time);
 }
 
 Event *event_queue_pop_event() {

@@ -19,6 +19,6 @@
  * @param delay the mean delay to send a package
  * @param seed the random seed
  */
-void run_simulation(size_t messages, float corruption, float loss, float delay, int seed, bool bidirectional);
+void run_simulation(size_t messages, float corruption, float loss, float delay, int seed, bool bidirectional, double max_time);
 
 #endif // SIMULATOR_H

@@ -23,6 +23,11 @@ bool check_args(struct gengetopt_args_info *args_info, FILE *log_file) {
 		return false;
 	}
 
+	if (args_info->maxTime_arg < 0) {
+		fprintf(stderr, "Max time must be at least 0\n");
+		return false;
+	}
+
     return true;
 }
 
@@ -41,9 +46,10 @@ int main(int argc, char **argv) {
 
     log_set_level(args_info.loglevel_arg);
     log_set_quiet(args_info.quiet_flag);
+	log_set_color(args_info.color_flag);
 
     run_simulation(args_info.messages_arg, args_info.corruption_arg, args_info.loss_arg,
-                   args_info.delay_arg, args_info.seed_arg, args_info.bidirectional_flag);
+                   args_info.delay_arg, args_info.seed_arg, args_info.bidirectional_flag, args_info.maxTime_arg);
 
     if (log_file != NULL) {
         fclose(log_file);
