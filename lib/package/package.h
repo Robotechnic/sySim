@@ -11,7 +11,7 @@
     struct name##_t {                                                                              \
         size_t size;                                                                               \
         Payload payload;                                                                           \
-        struct fields;                                                                             \
+        fields                                                                                     \
     };                                                                                             \
     typedef struct name##_t name;                                                                  \
     name *name##_new(const Payload *payload) {                                                     \
@@ -19,6 +19,11 @@
         package->size = sizeof(name);                                                              \
         memcpy(&package->payload, payload, sizeof(Payload));                                       \
         return package;                                                                            \
+    }                                                                                              \
+    Packet *name##_dup(const name *packet) {                                                       \
+        name *package = malloc(sizeof(name));                                                      \
+        memcpy(package, packet, sizeof(name));                                                     \
+        return (Packet *)package;                                                                  \
     }
 
 typedef struct payload_t {

@@ -36,6 +36,7 @@ void run_simulation(size_t messages, float corruption, float loss, float delay, 
         switch (event->type) {
             case TIMER_INTERUPT:
                 log_trace("TIMER_INTERUPT <- %c", side_to_char(event->sdt));
+                set_side(event->sdt);
                 if (event->sdt == A) {
                     A_timer_inerrupt(A_state);
                 } else {
@@ -44,6 +45,7 @@ void run_simulation(size_t messages, float corruption, float loss, float delay, 
                 break;
             case FROM_LAYER5:
                 log_trace("FROM_LAYER5 -> %c", side_to_char(event->sdt));
+                set_side(event->sdt);
                 if (event->sdt == A) {
                     A_send(A_state, event->data);
                 } else {
@@ -52,10 +54,11 @@ void run_simulation(size_t messages, float corruption, float loss, float delay, 
                 break;
             case FROM_LAYER3:
                 log_trace("FROM_LAYER3 <- %c", side_to_char(event->sdt));
+                set_side(event->sdt);
                 if (event->sdt == A) {
-                    A_recv(A_state, event->any);
+                    A_recv(A_state, event->packet);
                 } else {
-                    B_recv(B_state, event->any);
+                    B_recv(B_state, event->packet);
                 }
                 break;
             case TO_LAYER_5:

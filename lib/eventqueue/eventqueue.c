@@ -33,13 +33,13 @@ void new_from_layer5_event(double delay, side sdt, Payload data) {
     priority_queue_push(event_queue, event);
 }
 
-void new_from_layer3_event(double delay, side sdt, void *data) {
+void new_from_layer3_event(double delay, side sdt, Packet *data) {
     log_trace("LAYER_3 TO %c in %lf", side_to_char(sdt), delay);
     Event *event = malloc(sizeof(Event));
     event->type = FROM_LAYER3;
     event->activation_time = delay + get_time();
     event->sdt = sdt;
-    event->any = data;
+    event->packet = data;
     priority_queue_push(event_queue, event);
 }
 
@@ -49,7 +49,7 @@ void new_timeout_event(double delay, side sdt) {
     event->type = TIMER_INTERUPT;
     event->activation_time = delay + get_time();
     event->sdt = sdt;
-    event->any = NULL;
+    event->packet = NULL;
     priority_queue_push(event_queue, event);
 }
 

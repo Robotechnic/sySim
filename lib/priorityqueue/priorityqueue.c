@@ -10,11 +10,7 @@ typedef struct priority_queue {
 #define LEFT(i) (2 * i + 1)
 #define RIGHT(i) (2 * i + 2)
 #define PARENT(i) ((i - 1) / 2)
-#define EXTEND_CAPACITY(queue)                                                                     \
-    if (queue->size == queue->capacity) {                                                          \
-        queue->capacity *= 2;                                                                      \
-        queue->data = realloc(queue->data, sizeof(void *) * queue->capacity);                      \
-    }
+
 #define SWAP(queue, i, j)                                                                          \
     void *tmp = queue->data[i];                                                                    \
     queue->data[i] = queue->data[j];                                                               \
@@ -50,7 +46,10 @@ void pack(PriorityQueue *queue, size_t i) {
 }
 
 void priority_queue_push(PriorityQueue *queue, void *data) {
-    EXTEND_CAPACITY(queue)
+    if (queue->size == queue->capacity) {
+        queue->capacity *= 2;
+        queue->data = realloc(queue->data, sizeof(void *) * queue->capacity);
+    }
     queue->data[queue->size] = data;
     pack(queue, queue->size);
     queue->size++;
@@ -131,6 +130,9 @@ void priority_queue_remove_element(PriorityQueue *queue, equal equal_data, void 
         exit(1);
     }
     queue->size--;
+    if (i == queue->size) {
+        return;
+    }
     queue->data[i] = queue->data[queue->size];
     queue->data[queue->size] = NULL;
     ssize_t parent = PARENT(i);

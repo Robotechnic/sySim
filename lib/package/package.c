@@ -2,7 +2,8 @@
 
 Payload payload_new(const char data[PAYLOAD_SIZE]) {
     Payload payload;
-    memcpy(payload.data, data, PAYLOAD_SIZE);
+    memset(payload.data, 0, PAYLOAD_SIZE);
+    memcpy(payload.data, data, strlen(data));
     return payload;
 }
 
@@ -15,7 +16,7 @@ Payload encode_int(int value) {
 }
 
 Payload enpty_payload() {
-    char data[PAYLOAD_SIZE] = "";
+    char data[20] = {0};
     return payload_new(data);
 }
 

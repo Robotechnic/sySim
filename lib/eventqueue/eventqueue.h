@@ -11,7 +11,7 @@ typedef struct event {
     side sdt;
     union {
         Payload data;
-        void *any;
+        Packet *packet;
     };
 } Event;
 
@@ -44,7 +44,7 @@ void new_from_layer5_event(double delay, side sdt, Payload data);
  * @param sdt the even receiver
  * @param data the event data
  */
-void new_from_layer3_event(double delay, side sdt, void *data);
+void new_from_layer3_event(double delay, side sdt, Packet *data);
 
 /**
  * @brief push a new timeout event to the event queue
