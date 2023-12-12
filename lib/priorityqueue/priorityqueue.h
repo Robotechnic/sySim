@@ -69,7 +69,7 @@ bool priority_queue_empty(const PriorityQueue *queue);
 
 /**
  * @brief Print the priority queue.
- * 
+ *
  * @param queue the priority queue
  * @param print_data the function used to print the data
  */
@@ -77,7 +77,7 @@ void priority_queue_print(const PriorityQueue *queue, print_function print_data)
 
 /**
  * @brief Return true if the priority queue contains the element.
- * 
+ *
  * @param queue the priority queue
  * @param equal_data the function used to compare the data
  * @param data the data to be compared
@@ -87,7 +87,7 @@ bool priority_queue_has_element(const PriorityQueue *queue, equal equal_data, vo
 
 /**
  * @brief Delete the element from the priority queue.
- * 
+ *
  * @param queue the priority queue
  * @param equal_data the function used to compare the data
  * @param data the data to be compared

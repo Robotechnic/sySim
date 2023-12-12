@@ -1,9 +1,9 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 
-#include "protocol/side.h"
 #include "logger/log.h"
 #include "package/package.h"
+#include "protocol/side.h"
 #include "softwareinterface/softwareinterface.h"
 #include <stdbool.h>
 #include <stdlib.h>

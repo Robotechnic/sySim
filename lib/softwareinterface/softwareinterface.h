@@ -2,8 +2,8 @@
 #define SOFTWAREINTERFACE_H
 
 #include "eventqueue/eventqueue.h"
-#include "protocol/protocol.h"
 #include "package/package.h"
+#include "protocol/protocol.h"
 
 void stoptimer(side s);
 

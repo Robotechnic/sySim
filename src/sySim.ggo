@@ -12,9 +12,9 @@ option "loss"       l "Packet loss probability" float optional default="0.0"
 
 option "corruption" c "Packet corruption probability" float optional default="0.0"
 
-option "delay"      d "Average delay between packets" float optional default="10.0"
+option "delay"      d "Average delay between packets" float optional default="20.0"
 
-option "maxTime"	t "Maximum time to run the simulation" float optional default="500.0"
+option "maxTime"	t "Maximum time to run the simulation" float optional default="100.0"
 
 option "seed"       s "Seed for the random number generator" int optional default="42"
 

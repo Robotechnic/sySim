@@ -10,14 +10,14 @@
 #define DEFINE_PACKET(name, fields)                                                                \
     struct name##_t {                                                                              \
         size_t size;                                                                               \
-        Payload payload;                                                                          \
+        Payload payload;                                                                           \
         struct fields;                                                                             \
     };                                                                                             \
     typedef struct name##_t name;                                                                  \
-    name *name##_new(const Payload *payload) {                                                           \
+    name *name##_new(const Payload *payload) {                                                     \
         name *package = malloc(sizeof(name));                                                      \
         package->size = sizeof(name);                                                              \
-		memcpy(&package->payload, payload, sizeof(Payload));                                      \
+        memcpy(&package->payload, payload, sizeof(Payload));                                       \
         return package;                                                                            \
     }
 

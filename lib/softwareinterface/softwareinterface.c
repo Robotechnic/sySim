@@ -51,12 +51,9 @@ void tolayer3(side s, Packet *packet) {
 }
 
 void tolayer5(side s, const Payload *message) {
-    log("============= %c: message received =============\n", side_to_char(s));
-    log("%.*s\n", 20, message->data);
-    log("================================================\n");
     Payload data;
     memcpy(data.data, message->data, PAYLOAD_SIZE);
-    new_from_layer5_event(0, s, data);
+    new_to_layer5_event(0, s, data);
 }
 
 void set_layer3_corruption(float c) {

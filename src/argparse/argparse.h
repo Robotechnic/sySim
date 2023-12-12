@@ -35,66 +35,77 @@ extern "C" {
 #endif
 
 /** @brief Where the command line options are stored */
-struct gengetopt_args_info
-{
-  const char *help_help; /**< @brief Print help and exit help description.  */
-  const char *version_help; /**< @brief Print version and exit help description.  */
-  int messages_arg;	/**< @brief Number of messages to send (default='10').  */
-  char * messages_orig;	/**< @brief Number of messages to send original value given at command line.  */
-  const char *messages_help; /**< @brief Number of messages to send help description.  */
-  float loss_arg;	/**< @brief Packet loss probability (default='0.0').  */
-  char * loss_orig;	/**< @brief Packet loss probability original value given at command line.  */
-  const char *loss_help; /**< @brief Packet loss probability help description.  */
-  float corruption_arg;	/**< @brief Packet corruption probability (default='0.0').  */
-  char * corruption_orig;	/**< @brief Packet corruption probability original value given at command line.  */
-  const char *corruption_help; /**< @brief Packet corruption probability help description.  */
-  float delay_arg;	/**< @brief Average delay between packets (default='10.0').  */
-  char * delay_orig;	/**< @brief Average delay between packets original value given at command line.  */
-  const char *delay_help; /**< @brief Average delay between packets help description.  */
-  float maxTime_arg;	/**< @brief Maximum time to run the simulation (default='500.0').  */
-  char * maxTime_orig;	/**< @brief Maximum time to run the simulation original value given at command line.  */
-  const char *maxTime_help; /**< @brief Maximum time to run the simulation help description.  */
-  int seed_arg;	/**< @brief Seed for the random number generator (default='42').  */
-  char * seed_orig;	/**< @brief Seed for the random number generator original value given at command line.  */
-  const char *seed_help; /**< @brief Seed for the random number generator help description.  */
-  int bidirectional_flag;	/**< @brief If set, the channel will be bidirectional (default=off).  */
-  const char *bidirectional_help; /**< @brief If set, the channel will be bidirectional help description.  */
-  int loglevel_arg;	/**< @brief Logging level (default='2').  */
-  char * loglevel_orig;	/**< @brief Logging level original value given at command line.  */
-  const char *loglevel_help; /**< @brief Logging level help description.  */
-  char * logfile_arg;	/**< @brief If set, the logging will also be written to this file.  */
-  char * logfile_orig;	/**< @brief If set, the logging will also be written to this file original value given at command line.  */
-  const char *logfile_help; /**< @brief If set, the logging will also be written to this file help description.  */
-  int quiet_flag;	/**< @brief If set, the program won't print anything to stdout (default=off).  */
-  const char *quiet_help; /**< @brief If set, the program won't print anything to stdout help description.  */
-  int color_flag;	/**< @brief If set, the program will use colors in the output (default=off).  */
-  const char *color_help; /**< @brief If set, the program will use colors in the output help description.  */
-  
-  unsigned int help_given ;	/**< @brief Whether help was given.  */
-  unsigned int version_given ;	/**< @brief Whether version was given.  */
-  unsigned int messages_given ;	/**< @brief Whether messages was given.  */
-  unsigned int loss_given ;	/**< @brief Whether loss was given.  */
-  unsigned int corruption_given ;	/**< @brief Whether corruption was given.  */
-  unsigned int delay_given ;	/**< @brief Whether delay was given.  */
-  unsigned int maxTime_given ;	/**< @brief Whether maxTime was given.  */
-  unsigned int seed_given ;	/**< @brief Whether seed was given.  */
-  unsigned int bidirectional_given ;	/**< @brief Whether bidirectional was given.  */
-  unsigned int loglevel_given ;	/**< @brief Whether loglevel was given.  */
-  unsigned int logfile_given ;	/**< @brief Whether logfile was given.  */
-  unsigned int quiet_given ;	/**< @brief Whether quiet was given.  */
-  unsigned int color_given ;	/**< @brief Whether color was given.  */
+struct gengetopt_args_info {
+    const char *help_help;    /**< @brief Print help and exit help description.  */
+    const char *version_help; /**< @brief Print version and exit help description.  */
+    int messages_arg;         /**< @brief Number of messages to send (default='10').  */
+    char *messages_orig;      /**< @brief Number of messages to send original value given at command
+                                 line.  */
+    const char *messages_help; /**< @brief Number of messages to send help description.  */
+    float loss_arg;            /**< @brief Packet loss probability (default='0.0').  */
+    char *loss_orig; /**< @brief Packet loss probability original value given at command line.  */
+    const char *loss_help; /**< @brief Packet loss probability help description.  */
+    float corruption_arg;  /**< @brief Packet corruption probability (default='0.0').  */
+    char *corruption_orig; /**< @brief Packet corruption probability original value given at command
+                              line.  */
+    const char *corruption_help; /**< @brief Packet corruption probability help description.  */
+    float delay_arg;             /**< @brief Average delay between packets (default='20.0').  */
+    char *delay_orig; /**< @brief Average delay between packets original value given at command
+                         line.  */
+    const char *delay_help;   /**< @brief Average delay between packets help description.  */
+    float maxTime_arg;        /**< @brief Maximum time to run the simulation (default='100.0').  */
+    char *maxTime_orig;       /**< @brief Maximum time to run the simulation original value given at
+                                 command line.  */
+    const char *maxTime_help; /**< @brief Maximum time to run the simulation help description.  */
+    int seed_arg;             /**< @brief Seed for the random number generator (default='42').  */
+    char *seed_orig;        /**< @brief Seed for the random number generator original value given at
+                               command line.  */
+    const char *seed_help;  /**< @brief Seed for the random number generator help description.  */
+    int bidirectional_flag; /**< @brief If set, the channel will be bidirectional (default=off).  */
+    const char *bidirectional_help; /**< @brief If set, the channel will be bidirectional help
+                                       description.  */
+    int loglevel_arg;               /**< @brief Logging level (default='2').  */
+    char *loglevel_orig;       /**< @brief Logging level original value given at command line.  */
+    const char *loglevel_help; /**< @brief Logging level help description.  */
+    char *logfile_arg;  /**< @brief If set, the logging will also be written to this file.  */
+    char *logfile_orig; /**< @brief If set, the logging will also be written to this file original
+                           value given at command line.  */
+    const char *logfile_help; /**< @brief If set, the logging will also be written to this file help
+                                 description.  */
+    int quiet_flag; /**< @brief If set, the program won't print anything to stdout (default=off). */
+    const char *quiet_help; /**< @brief If set, the program won't print anything to stdout help
+                               description.  */
+    int color_flag; /**< @brief If set, the program will use colors in the output (default=off).  */
+    const char *color_help; /**< @brief If set, the program will use colors in the output help
+                               description.  */
 
-} ;
+    unsigned int help_given;          /**< @brief Whether help was given.  */
+    unsigned int version_given;       /**< @brief Whether version was given.  */
+    unsigned int messages_given;      /**< @brief Whether messages was given.  */
+    unsigned int loss_given;          /**< @brief Whether loss was given.  */
+    unsigned int corruption_given;    /**< @brief Whether corruption was given.  */
+    unsigned int delay_given;         /**< @brief Whether delay was given.  */
+    unsigned int maxTime_given;       /**< @brief Whether maxTime was given.  */
+    unsigned int seed_given;          /**< @brief Whether seed was given.  */
+    unsigned int bidirectional_given; /**< @brief Whether bidirectional was given.  */
+    unsigned int loglevel_given;      /**< @brief Whether loglevel was given.  */
+    unsigned int logfile_given;       /**< @brief Whether logfile was given.  */
+    unsigned int quiet_given;         /**< @brief Whether quiet was given.  */
+    unsigned int color_given;         /**< @brief Whether color was given.  */
+};
 
 /** @brief The additional parameters to pass to parser functions */
-struct cmdline_parser_params
-{
-  int override; /**< @brief whether to override possibly already present options (default 0) */
-  int initialize; /**< @brief whether to initialize the option structure gengetopt_args_info (default 1) */
-  int check_required; /**< @brief whether to check that all required options were provided (default 1) */
-  int check_ambiguity; /**< @brief whether to check for options already specified in the option structure gengetopt_args_info (default 0) */
-  int print_errors; /**< @brief whether getopt_long should print an error message for a bad option (default 1) */
-} ;
+struct cmdline_parser_params {
+    int override;   /**< @brief whether to override possibly already present options (default 0) */
+    int initialize; /**< @brief whether to initialize the option structure gengetopt_args_info
+                       (default 1) */
+    int check_required;  /**< @brief whether to check that all required options were provided
+                            (default 1) */
+    int check_ambiguity; /**< @brief whether to check for options already specified in the option
+                            structure gengetopt_args_info (default 0) */
+    int print_errors; /**< @brief whether getopt_long should print an error message for a bad option
+                         (default 1) */
+};
 
 /** @brief the purpose string of the program */
 extern const char *gengetopt_args_info_purpose;
@@ -112,8 +123,7 @@ extern const char *gengetopt_args_info_help[];
  * @param args_info the structure where option information will be stored
  * @return 0 if everything went fine, NON 0 if an error took place
  */
-int cmdline_parser (int argc, char **argv,
-  struct gengetopt_args_info *args_info);
+int cmdline_parser(int argc, char **argv, struct gengetopt_args_info *args_info);
 
 /**
  * The command line parser (version with additional parameters - deprecated)
@@ -126,9 +136,8 @@ int cmdline_parser (int argc, char **argv,
  * @return 0 if everything went fine, NON 0 if an error took place
  * @deprecated use cmdline_parser_ext() instead
  */
-int cmdline_parser2 (int argc, char **argv,
-  struct gengetopt_args_info *args_info,
-  int override, int initialize, int check_required);
+int cmdline_parser2(int argc, char **argv, struct gengetopt_args_info *args_info, int override,
+                    int initialize, int check_required);
 
 /**
  * The command line parser (version with additional parameters)
@@ -138,9 +147,8 @@ int cmdline_parser2 (int argc, char **argv,
  * @param params additional parameters for the parser
  * @return 0 if everything went fine, NON 0 if an error took place
  */
-int cmdline_parser_ext (int argc, char **argv,
-  struct gengetopt_args_info *args_info,
-  struct cmdline_parser_params *params);
+int cmdline_parser_ext(int argc, char **argv, struct gengetopt_args_info *args_info,
+                       struct cmdline_parser_params *params);
 
 /**
  * Save the contents of the option struct into an already open FILE stream.
@@ -148,8 +156,7 @@ int cmdline_parser_ext (int argc, char **argv,
  * @param args_info the option struct to dump
  * @return 0 if everything went fine, NON 0 if an error took place
  */
-int cmdline_parser_dump(FILE *outfile,
-  struct gengetopt_args_info *args_info);
+int cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info);
 
 /**
  * Save the contents of the option struct into a (text) file.
@@ -158,8 +165,7 @@ int cmdline_parser_dump(FILE *outfile,
  * @param args_info the option struct to save
  * @return 0 if everything went fine, NON 0 if an error took place
  */
-int cmdline_parser_file_save(const char *filename,
-  struct gengetopt_args_info *args_info);
+int cmdline_parser_file_save(const char *filename, struct gengetopt_args_info *args_info);
 
 /**
  * Print the help
@@ -171,7 +177,7 @@ void cmdline_parser_print_help(void);
 void cmdline_parser_print_version(void);
 
 /**
- * Initializes all the fields a cmdline_parser_params structure 
+ * Initializes all the fields a cmdline_parser_params structure
  * to their default values
  * @param params the structure to initialize
  */
@@ -189,13 +195,13 @@ struct cmdline_parser_params *cmdline_parser_params_create(void);
  * (also set default values for options that have a default)
  * @param args_info the structure to initialize
  */
-void cmdline_parser_init (struct gengetopt_args_info *args_info);
+void cmdline_parser_init(struct gengetopt_args_info *args_info);
 /**
  * Deallocates the string fields of the gengetopt_args_info structure
  * (but does not deallocate the structure itself)
  * @param args_info the structure to deallocate
  */
-void cmdline_parser_free (struct gengetopt_args_info *args_info);
+void cmdline_parser_free(struct gengetopt_args_info *args_info);
 
 /**
  * Checks that all the required options were specified
@@ -204,9 +210,7 @@ void cmdline_parser_free (struct gengetopt_args_info *args_info);
  *   possible errors
  * @return
  */
-int cmdline_parser_required (struct gengetopt_args_info *args_info,
-  const char *prog_name);
-
+int cmdline_parser_required(struct gengetopt_args_info *args_info, const char *prog_name);
 
 #ifdef __cplusplus
 }
