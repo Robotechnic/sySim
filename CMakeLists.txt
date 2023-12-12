@@ -30,7 +30,7 @@ if(CLANG_FORMAT_EXE)
 			${PROJECT_SOURCE_DIR}/src/*.c
 			${PROJECT_SOURCE_DIR}/src/*/*.c
 			${PROJECT_SOURCE_DIR}/src/*/*.h 
-			${PROJECT_SOURCE_DIR}/lib/*/*.h
+			${PROJECT_SOURCE_DIR}/lib/*/*.c
 			${PROJECT_SOURCE_DIR}/lib/*/*.h
 			${PROJECT_SOURCE_DIR}/protocols/*.c
 		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

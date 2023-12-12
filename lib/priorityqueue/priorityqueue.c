@@ -65,78 +65,78 @@ void *priority_queue_peek(const PriorityQueue *queue) {
 }
 
 void unpack(PriorityQueue *queue, size_t i) {
-	size_t li = LEFT(i);
-	size_t ri = RIGHT(i);
-	while (i < queue->size && (li < queue->size || ri < queue->size)) {
-		size_t ci = li;
-		bool comp = false;
-		if (ri < queue->size && queue->compare(queue->data[ri], queue->data[li])) {
-			comp = true;
-			ci = ri;
-		}
-		if (comp || queue->compare(queue->data[ci], queue->data[i])) {
-			SWAP(queue, i, ci)
-			i = ci;
-			li = LEFT(i);
-			ri = RIGHT(i);
-		} else {
-			return;
-		}
-	}
+    size_t li = LEFT(i);
+    size_t ri = RIGHT(i);
+    while (i < queue->size && (li < queue->size || ri < queue->size)) {
+        size_t ci = li;
+        bool comp = false;
+        if (ri < queue->size && queue->compare(queue->data[ri], queue->data[li])) {
+            comp = true;
+            ci = ri;
+        }
+        if (comp || queue->compare(queue->data[ci], queue->data[i])) {
+            SWAP(queue, i, ci)
+            i = ci;
+            li = LEFT(i);
+            ri = RIGHT(i);
+        } else {
+            return;
+        }
+    }
 }
 
 void *priority_queue_pop(PriorityQueue *queue) {
-	void *element = priority_queue_peek(queue);
-	queue->size--;
-	queue->data[0] = queue->data[queue->size];
-	queue->data[queue->size] = NULL;
-	unpack(queue, 0);
-	return element;
+    void *element = priority_queue_peek(queue);
+    queue->size--;
+    queue->data[0] = queue->data[queue->size];
+    queue->data[queue->size] = NULL;
+    unpack(queue, 0);
+    return element;
 }
 
 void priority_queue_print(const PriorityQueue *queue, print_function print_data) {
     printf("PriorityQueue: size = %zu, capacity = %zu\n", queue->size, queue->capacity);
-	for (size_t i = 0; i < queue->size; i++) {
-		printf("  ");
-		print_data(queue->data[i]);
-		printf("\n");
-	}
+    for (size_t i = 0; i < queue->size; i++) {
+        printf("  ");
+        print_data(queue->data[i]);
+        printf("\n");
+    }
 }
 
 size_t priority_queue_size(const PriorityQueue *queue) {
-	return queue->size;
+    return queue->size;
 }
 
 bool priority_queue_empty(const PriorityQueue *queue) {
-	return queue->size == 0;
+    return queue->size == 0;
 }
 
 ssize_t get_element(const PriorityQueue *queue, equal equal_data, void *data) {
-	for (size_t i = 0; i < queue->size; i++) {
-		if (equal_data(queue->data[i], data)) {
-			return i;
-		}
-	}
-	return -1;
+    for (size_t i = 0; i < queue->size; i++) {
+        if (equal_data(queue->data[i], data)) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 bool priority_queue_has_element(const PriorityQueue *queue, equal equal_data, void *data) {
-	return get_element(queue, equal_data, data) != -1;
+    return get_element(queue, equal_data, data) != -1;
 }
 
 void priority_queue_remove_element(PriorityQueue *queue, equal equal_data, void *data) {
-	ssize_t i = get_element(queue, equal_data, data);
-	if (i == -1) {
-		log_fatal("PriorityQueue does not contain element\n");
-		exit(1);
-	}
-	queue->size--;
-	queue->data[i] = queue->data[queue->size];
-	queue->data[queue->size] = NULL;
-	ssize_t parent = PARENT(i);
-	if (parent >= 0 && queue->compare(queue->data[i], queue->data[parent])) {
-		pack(queue, i);
-	} else {
-		unpack(queue, i);
-	}
+    ssize_t i = get_element(queue, equal_data, data);
+    if (i == -1) {
+        log_fatal("PriorityQueue does not contain element\n");
+        exit(1);
+    }
+    queue->size--;
+    queue->data[i] = queue->data[queue->size];
+    queue->data[queue->size] = NULL;
+    ssize_t parent = PARENT(i);
+    if (parent >= 0 && queue->compare(queue->data[i], queue->data[parent])) {
+        pack(queue, i);
+    } else {
+        unpack(queue, i);
+    }
 }
