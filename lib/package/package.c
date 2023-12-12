@@ -1,12 +1,12 @@
 #include "package/package.h"
 
-Payload *payload_new(const char data[PAYLOAD_SIZE]) {
-    Payload *payload = malloc(sizeof(Payload));
-    memcpy(payload->data, data, PAYLOAD_SIZE);
+Payload payload_new(const char data[PAYLOAD_SIZE]) {
+    Payload payload;
+    memcpy(payload.data, data, PAYLOAD_SIZE);
     return payload;
 }
 
-Payload *encode_int(int value) {
+Payload encode_int(int value) {
     char data[PAYLOAD_SIZE];
     for (int i = 0; i < sizeof(int); i++) {
 		data[i] = (value >> (i * 8)) & 0xFF;
@@ -14,7 +14,7 @@ Payload *encode_int(int value) {
 	return payload_new(data);
 }
 
-Payload *enpty_payload() {
+Payload enpty_payload() {
 	char data[PAYLOAD_SIZE] = "";
     return payload_new(data);
 }

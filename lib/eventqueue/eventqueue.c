@@ -3,7 +3,10 @@
 static PriorityQueue *event_queue = NULL;
 
 void free_event(void *event) {
-	free(((Event *)event)->data);
+	const Event *e = (Event *)event;
+	if (e->type == TO_LAYER_5 || e->type == FROM_LAYER3) {
+		free(e->any);
+	}
 	free(event);
 }
 
@@ -26,7 +29,7 @@ void eventqueue_free() {
 }
 
 
-void new_from_layer5_event(double delay, side sdt, void *data) {
+void new_from_layer5_event(double delay, side sdt, Payload data) {
     Event *event = malloc(sizeof(Event));
     event->type = FROM_LAYER5;
     event->activation_time = delay + get_time();
@@ -40,7 +43,7 @@ void new_from_layer3_event(double delay, side sdt, void *data) {
     event->type = FROM_LAYER3;
     event->activation_time = delay + get_time();
     event->sdt = sdt;
-    event->data = data;
+    event->any = data;
 	priority_queue_push(event_queue, event);
 }
 
@@ -49,11 +52,11 @@ void new_timeout_event(double delay, side sdt) {
     event->type = TIMER_INTERUPT;
     event->activation_time = delay + get_time();
     event->sdt = sdt;
-    event->data = NULL;
+    event->any = NULL;
 	priority_queue_push(event_queue, event);
 }
 
-void new_to_layer5_event(double delay, side sdt, void *data) {
+void new_to_layer5_event(double delay, side sdt, Payload data) {
 	Event *event = malloc(sizeof(Event));
 	event->type = TO_LAYER_5;
 	event->activation_time = delay + get_time();

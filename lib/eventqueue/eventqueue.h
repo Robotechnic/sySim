@@ -9,7 +9,10 @@ typedef struct event {
     enum { TIMER_INTERUPT, FROM_LAYER5, FROM_LAYER3, TO_LAYER_5 } type;
     double activation_time;
     side sdt;
-    void *data;
+    union {
+		Payload data;
+		void *any;
+	};
 } Event;
 
 /**
@@ -32,7 +35,7 @@ void eventqueue_free();
  * @param sdt the even receiver
  * @param data the event data
  */
-void new_from_layer5_event(double delay, side sdt, void *data);
+void new_from_layer5_event(double delay, side sdt, Payload data);
 
 /**
  * @brief push a new receive event to the event queue
@@ -58,7 +61,7 @@ void new_timeout_event(double delay, side sdt);
  * @param sdt the even receiver
  * @param data the event data
  */
-void new_to_layer5_event(double delay, side sdt, void *data);
+void new_to_layer5_event(double delay, side sdt, Payload data);
 
 /**
  * @brief pop the next event from the event queue

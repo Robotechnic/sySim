@@ -54,9 +54,8 @@ void tolayer5(side s, const Payload *message) {
     log("============= %c: message received =============\n", side_to_char(s));
     log("%.*s\n", 20, message->data);
     log("================================================\n");
-	char *data = malloc(PAYLOAD_SIZE + 1);
-	memcpy(data, message->data, PAYLOAD_SIZE);
-	data[PAYLOAD_SIZE] = '\0';
+    Payload data;
+    memcpy(data.data, message->data, PAYLOAD_SIZE);
     new_from_layer5_event(0, s, data);
 }
 

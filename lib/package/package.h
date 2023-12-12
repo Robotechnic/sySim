@@ -35,9 +35,9 @@ typedef struct packet_t Packet;
 Packet *package_new(int id, Payload *payload);
 void package_free(Packet *package);
 
-Payload *payload_new(const char data[PAYLOAD_SIZE]);
-Payload *encode_int(int value);
-Payload *enpty_payload();
+Payload payload_new(const char data[PAYLOAD_SIZE]);
+Payload encode_int(int value);
+Payload enpty_payload();
 
 int decode_int(const Payload *payload);
 

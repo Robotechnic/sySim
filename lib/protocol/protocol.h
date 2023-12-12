@@ -31,7 +31,7 @@ void *B_init();
  * @param state the current state
  * @param payload the payload to send
  */
-void A_send(void *state, Payload *payload);
+void A_send(void *state, Payload payload);
 
 /**
  * @brief This function is called when the simulation wants to send a payload to the other side.
@@ -39,7 +39,7 @@ void A_send(void *state, Payload *payload);
  * @param state the current state
  * @param payload the payload to send
  */
-void B_send(void *state, Payload *payload);
+void B_send(void *state, Payload payload);
 
 /**
  * @brief This function is called when the simulation receives a packet from the other side.

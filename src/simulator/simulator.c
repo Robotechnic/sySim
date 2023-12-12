@@ -19,7 +19,7 @@ void run_simulation(size_t messages, float corruption, float loss, float delay, 
 	for (unsigned i = 0; i < messages; i++) {
         char message[20];
 		snprintf(message, 20, "%d", i);
-        Payload *payload = payload_new(message);
+        Payload payload = payload_new(message);
         new_from_layer5_event((float)i * delay, sdt, payload);
 		if (bidirectional) {
 			sdt = (sdt == A) ? B : A;
@@ -52,21 +52,20 @@ void run_simulation(size_t messages, float corruption, float loss, float delay, 
 			case FROM_LAYER3:
 				log_trace("FROM_LAYER3 <- %c", side_to_char(event->sdt));
 				if (event->sdt == A) {
-					A_recv(A_state, event->data);
+					A_recv(A_state, event->any);
 				} else {
-					B_recv(B_state, event->data);
+					B_recv(B_state, event->any);
 				}
 				break;
 			case TO_LAYER_5:
 				log_trace("TO_LAYER_5 -> %s", side_to_char(event->sdt));
-				log_trace("\tMessage: %s", (char *)event->data);
-				free(event->data);
+				log_trace("\tMessage: %.*s", PAYLOAD_SIZE ,event->data);
 				break;
 		}
 		free(event);
     }
 
-	if (get_time() > max_time) {
+	if (get_time() >= max_time) {
 		log_error("Simulation timed out");
 	}
 
