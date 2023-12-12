@@ -46,7 +46,7 @@ void new_from_layer3_event(double delay, side sdt, void *data) {
 
 void new_timeout_event(double delay, side sdt) {
     Event *event = malloc(sizeof(Event));
-    event->type = TIMEOUT_EVENT;
+    event->type = TIMER_INTERUPT;
     event->activation_time = delay + get_time();
     event->sdt = sdt;
     event->data = NULL;
@@ -65,7 +65,7 @@ void new_to_layer5_event(double delay, side sdt, void *data) {
 void print_event(void *event) {
     const Event *e = (Event *)event;
     switch (e->type) {
-        case TIMEOUT_EVENT:
+        case TIMER_INTERUPT:
             printf("TIMEOUT_EVENT ");
             break;
         case FROM_LAYER5:
@@ -90,4 +90,30 @@ Event *event_queue_pop_event() {
 
 bool event_queue_empty() {
 	return priority_queue_empty(event_queue);
+}
+
+bool timer_is_running_A(void *a, void *b) {
+    const Event *event_a = a;
+    return event_a->sdt == A && event_a->type == TIMER_INTERUPT;
+}
+
+bool timer_is_running_B(void *a, void *b) {
+    const Event *event_a = a;
+    return event_a->sdt == B && event_a->type == TIMER_INTERUPT;
+}
+
+bool has_timeout_event(side s) {
+	if (s == A) {
+		return priority_queue_has_element(event_queue, timer_is_running_A, NULL);
+	} else {
+		return priority_queue_has_element(event_queue, timer_is_running_B, NULL);
+	}
+}
+
+void remove_timeout_event(side s) {
+	if (s == A) {
+		priority_queue_remove_element(event_queue, timer_is_running_A, NULL);
+	} else {
+        priority_queue_remove_element(event_queue, timer_is_running_B, NULL);
+    }
 }

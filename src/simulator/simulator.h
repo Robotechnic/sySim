@@ -5,6 +5,7 @@
 #include "package/package.h"
 #include "eventqueue/eventqueue.h"
 #include "protocol/protocol.h"
+#include "softwareinterface/softwareinterface.h"
 #include "time/time.h"
 #include <stdlib.h>
 

@@ -2,12 +2,11 @@
 
 void run_simulation(size_t messages, float corruption, float loss, float delay, int seed, bool bidirectional) {
     srand(seed);
-    (void) messages;
-	(void) corruption;
-	(void) loss;
 
 	reset_time();
 	eventqueue_init(messages * 3);
+	set_layer3_loss(loss);
+	set_layer3_corruption(corruption);
 
 	side sdt = A;
 	for (unsigned i = 0; i < messages; i++) {
@@ -26,8 +25,8 @@ void run_simulation(size_t messages, float corruption, float loss, float delay, 
     while (!event_queue_empty()) {
         event = event_queue_pop_event();
 		switch (event->type) {
-			case TIMEOUT_EVENT:
-				log_trace("TIMEOUT_EVENT <- %s", sendto_to_char(event->sdt));
+			case TIMER_INTERUPT:
+				log_trace("TIMER_INTERUPT <- %s", sendto_to_char(event->sdt));
 				if (event->sdt == A) {
 					A_timeout(A_state);
 				} else {

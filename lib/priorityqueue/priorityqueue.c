@@ -4,7 +4,7 @@ typedef struct priority_queue {
     size_t size;
     size_t capacity;
     void **data;
-    compare_function compare;
+    less_than compare;
 } PriorityQueue;
 
 #define LEFT(i) (2 * i + 1)
@@ -20,7 +20,7 @@ typedef struct priority_queue {
     queue->data[i] = queue->data[j];                                                               \
     queue->data[j] = tmp;
 
-PriorityQueue *priority_queue_new(compare_function compare, size_t capacity) {
+PriorityQueue *priority_queue_new(less_than compare, size_t capacity) {
     PriorityQueue *queue = malloc(sizeof(PriorityQueue));
     queue->size = 0;
     queue->capacity = capacity;
@@ -109,4 +109,34 @@ size_t priority_queue_size(const PriorityQueue *queue) {
 
 bool priority_queue_empty(const PriorityQueue *queue) {
 	return queue->size == 0;
+}
+
+ssize_t get_element(const PriorityQueue *queue, equal equal_data, void *data) {
+	for (size_t i = 0; i < queue->size; i++) {
+		if (equal_data(queue->data[i], data)) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+bool priority_queue_has_element(const PriorityQueue *queue, equal equal_data, void *data) {
+	return get_element(queue, equal_data, data) != -1;
+}
+
+void priority_queue_remove_element(PriorityQueue *queue, equal equal_data, void *data) {
+	ssize_t i = get_element(queue, equal_data, data);
+	if (i == -1) {
+		log_fatal("PriorityQueue does not contain element\n");
+		exit(1);
+	}
+	queue->size--;
+	queue->data[i] = queue->data[queue->size];
+	queue->data[queue->size] = NULL;
+	ssize_t parent = PARENT(i);
+	if (parent >= 0 && queue->compare(queue->data[i], queue->data[parent])) {
+		pack(queue, i);
+	} else {
+		unpack(queue, i);
+	}
 }

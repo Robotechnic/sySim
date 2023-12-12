@@ -6,7 +6,8 @@
 #include <stdlib.h>
 
 typedef struct priority_queue PriorityQueue;
-typedef bool (*compare_function)(void *, void *);
+typedef bool (*less_than)(void *, void *);
+typedef bool (*equal)(void *, void *);
 typedef void (*free_function)(void *);
 typedef void (*print_function)(void *);
 
@@ -17,7 +18,7 @@ typedef void (*print_function)(void *);
  * @param capacity the initial capacity of the priority queue
  * @return PriorityQueue* the new priority queue
  */
-PriorityQueue *priority_queue_new(compare_function compare, size_t capacity);
+PriorityQueue *priority_queue_new(less_than compare, size_t capacity);
 
 /**
  * @brief Free the priority queue.
@@ -73,5 +74,24 @@ bool priority_queue_empty(const PriorityQueue *queue);
  * @param print_data the function used to print the data
  */
 void priority_queue_print(const PriorityQueue *queue, print_function print_data);
+
+/**
+ * @brief Return true if the priority queue contains the element.
+ * 
+ * @param queue the priority queue
+ * @param equal_data the function used to compare the data
+ * @param data the data to be compared
+ * @return true if the priority queue contains the element
+ */
+bool priority_queue_has_element(const PriorityQueue *queue, equal equal_data, void *data);
+
+/**
+ * @brief Delete the element from the priority queue.
+ * 
+ * @param queue the priority queue
+ * @param equal_data the function used to compare the data
+ * @param data the data to be compared
+ */
+void priority_queue_remove_element(PriorityQueue *queue, equal equal_data, void *data);
 
 #endif // PRIORITYQUEUE_H

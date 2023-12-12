@@ -6,7 +6,7 @@
 #include "time/time.h"
 
 typedef struct event {
-    enum { TIMEOUT_EVENT, FROM_LAYER5, FROM_LAYER3, TO_LAYER_5 } type;
+    enum { TIMER_INTERUPT, FROM_LAYER5, FROM_LAYER3, TO_LAYER_5 } type;
     double activation_time;
     side sdt;
     void *data;
@@ -73,6 +73,21 @@ Event *event_queue_pop_event();
  * @return true if the event queue is empty
  */
 bool event_queue_empty();
+
+/**
+ * @brief check if the event queue has a timeout event for a given side
+ * 
+ * @param sdt the side to check
+ * @return true if the event queue has a timeout event for the given side
+ */
+bool has_timeout_event(side sdt);
+
+/**
+ * @brief remove the timeout event for a given side
+ * 
+ * @param sdt the side to remove the timeout event for
+ */
+void remove_timeout_event(side sdt);
 
 /**
  * @brief display an event on the standard output
