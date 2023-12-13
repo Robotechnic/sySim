@@ -21,9 +21,9 @@
         return package;                                                                            \
     }                                                                                              \
     Packet *name##_dup(const name *packet) {                                                       \
-        name *package = malloc(sizeof(name));                                                      \
-        memcpy(package, packet, sizeof(name));                                                     \
-        return (Packet *)package;                                                                  \
+        name *dup_packet = malloc(sizeof(name));                                                   \
+        memcpy(dup_packet, packet, sizeof(name));                                                  \
+        return (Packet *)dup_packet;                                                               \
     }
 
 typedef struct payload_t {

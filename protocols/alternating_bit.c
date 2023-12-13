@@ -220,7 +220,7 @@ void pf(void *state) {
 }
 
 void A_free(void *state) {
-	State *s = (State *)state;
+    State *s = (State *)state;
     queue_free(s->message_queue, pf);
     package_free((Packet *)s->current_packet);
     free(state);

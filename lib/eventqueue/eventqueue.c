@@ -122,11 +122,11 @@ bool has_timeout_event(side s) {
 }
 
 void remove_timeout_event(side s) {
-	void *event;
+    void *event;
     if (s == A) {
         event = priority_queue_remove_element(event_queue, timer_is_running_A, NULL);
     } else {
         event = priority_queue_remove_element(event_queue, timer_is_running_B, NULL);
     }
-	free(event);
+    free(event);
 }

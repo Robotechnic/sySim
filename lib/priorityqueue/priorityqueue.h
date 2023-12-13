@@ -91,7 +91,7 @@ bool priority_queue_has_element(const PriorityQueue *queue, equal equal_data, vo
  * @param queue the priority queue
  * @param equal_data the function used to compare the data
  * @param data the data to be compared
- * 
+ *
  * @return void* the data of the element
  */
 void *priority_queue_remove_element(PriorityQueue *queue, equal equal_data, void *data);

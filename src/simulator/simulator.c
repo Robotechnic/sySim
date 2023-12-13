@@ -60,7 +60,7 @@ void run_simulation(size_t messages, float corruption, float loss, float delay, 
                 } else {
                     B_recv(B_state, event->packet);
                 }
-				free(event->packet);
+                free(event->packet);
                 break;
             case TO_LAYER_5:
                 log_trace("TO_LAYER_5 -> %c", side_to_char(event->sdt));
