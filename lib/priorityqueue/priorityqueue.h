@@ -6,8 +6,8 @@
 #include <stdlib.h>
 
 typedef struct priority_queue PriorityQueue;
-typedef bool (*less_than)(void *, void *);
-typedef bool (*equal)(void *, void *);
+typedef bool (*less_than)(const void *, const void *);
+typedef bool (*equal)(const void *, const void *);
 typedef void (*free_function)(void *);
 typedef void (*print_function)(void *);
 
@@ -91,7 +91,9 @@ bool priority_queue_has_element(const PriorityQueue *queue, equal equal_data, vo
  * @param queue the priority queue
  * @param equal_data the function used to compare the data
  * @param data the data to be compared
+ * 
+ * @return void* the data of the element
  */
-void priority_queue_remove_element(PriorityQueue *queue, equal equal_data, void *data);
+void *priority_queue_remove_element(PriorityQueue *queue, equal equal_data, void *data);
 
 #endif // PRIORITYQUEUE_H

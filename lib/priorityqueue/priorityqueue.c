@@ -123,15 +123,16 @@ bool priority_queue_has_element(const PriorityQueue *queue, equal equal_data, vo
     return get_element(queue, equal_data, data) != -1;
 }
 
-void priority_queue_remove_element(PriorityQueue *queue, equal equal_data, void *data) {
+void *priority_queue_remove_element(PriorityQueue *queue, equal equal_data, void *data) {
     ssize_t i = get_element(queue, equal_data, data);
+	void *element = queue->data[i];
     if (i == -1) {
         log_fatal("PriorityQueue does not contain element\n");
         exit(1);
     }
     queue->size--;
     if (i == queue->size) {
-        return;
+        return element;
     }
     queue->data[i] = queue->data[queue->size];
     queue->data[queue->size] = NULL;
@@ -141,4 +142,5 @@ void priority_queue_remove_element(PriorityQueue *queue, equal equal_data, void 
     } else {
         unpack(queue, i);
     }
+	return element;
 }

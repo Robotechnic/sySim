@@ -42,6 +42,7 @@ void starttimer(double increment) {
 void tolayer3(Packet *packet) {
     if (random_less_than(loss)) {
         log_debug("PACKET BEING LOST");
+		free(packet);
         return;
     }
     if (random_less_than(corruption)) {

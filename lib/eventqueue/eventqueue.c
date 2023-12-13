@@ -3,12 +3,23 @@
 static PriorityQueue *event_queue = NULL;
 
 void free_event(void *event) {
+    const Event *e = (const Event *)event;
+    if (e->type == FROM_LAYER3) {
+        free(e->packet);
+    }
     free(event);
 }
 
-bool compare_event(void *a, void *b) {
-    const Event *event_a = (Event *)a;
-    const Event *event_b = (Event *)b;
+/**
+ * @brief Compare two events by activation time (ascending)
+ *
+ * @param a the first event to compare
+ * @param b the second event to compare
+ * @return true if the event a is before the event b
+ */
+bool compare_event(const void *a, const void *b) {
+    const Event *event_a = (const Event *)a;
+    const Event *event_b = (const Event *)b;
     return event_a->activation_time < event_b->activation_time;
 }
 
@@ -92,12 +103,12 @@ bool event_queue_empty() {
     return priority_queue_empty(event_queue);
 }
 
-bool timer_is_running_A(void *a, void *b) {
+bool timer_is_running_A(const void *a, const void *_) {
     const Event *event_a = a;
     return event_a->sdt == A && event_a->type == TIMER_INTERUPT;
 }
 
-bool timer_is_running_B(void *a, void *b) {
+bool timer_is_running_B(const void *a, const void *_) {
     const Event *event_a = a;
     return event_a->sdt == B && event_a->type == TIMER_INTERUPT;
 }
@@ -111,9 +122,11 @@ bool has_timeout_event(side s) {
 }
 
 void remove_timeout_event(side s) {
+	void *event;
     if (s == A) {
-        priority_queue_remove_element(event_queue, timer_is_running_A, NULL);
+        event = priority_queue_remove_element(event_queue, timer_is_running_A, NULL);
     } else {
-        priority_queue_remove_element(event_queue, timer_is_running_B, NULL);
+        event = priority_queue_remove_element(event_queue, timer_is_running_B, NULL);
     }
+	free(event);
 }
