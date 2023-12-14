@@ -1,37 +1,42 @@
 #include "simulator/simulator.h"
 
-void run_simulation(size_t messages, float corruption, float loss, float delay, int seed,
-                    bool bidirectional, double max_time) {
-    srand(seed);
-
-    log_debug("Running simulation with:");
-    log_debug("\tMessages:   %zu", messages);
-    log_debug("\tCorruption: %.2f", corruption);
-    log_debug("\tLoss:       %.2f", loss);
-    log_debug("\tDelay:      %.2fs", delay);
-    log_debug("\tSeed:       %d", seed);
+void init_simulation(const SimulationConfig *config) {
+    srand(config->seed);
 
     reset_time();
-    eventqueue_init(messages * 3);
-    set_layer3_loss(loss);
-    set_layer3_corruption(corruption);
+    eventqueue_init(config->messages * 3);
+    set_layer3_loss(config->loss);
+    set_layer3_corruption(config->corruption);
 
     side sdt = A;
-    for (unsigned i = 0; i < messages; i++) {
+    for (unsigned i = 0; i < config->messages; i++) {
         char message[20];
         snprintf(message, 20, "%d", i);
         Payload payload = payload_new(message);
-        new_from_layer5_event((float)i * delay, sdt, payload);
-        if (bidirectional) {
+        new_from_layer5_event((float)i * config->delay, sdt, payload);
+        if (config->bidirectional) {
             sdt = (sdt == A) ? B : A;
         }
     }
+
+    log_debug("Running simulation with:");
+    log_debug("\tMessages:      %zu", config->messages);
+    log_debug("\tCorruption:    %.2f", config->corruption);
+    log_debug("\tLoss:          %.2f", config->loss);
+    log_debug("\tDelay:         %.2fs", config->delay);
+    log_debug("\tSeed:          %d", config->seed);
+    log_debug("\tBidirectional: %s", config->bidirectional ? "true" : "false");
+}
+
+void run_simulation(const SimulationConfig *config) {
+
+    init_simulation(config);
 
     void *A_state = A_init();
     void *B_state = B_init();
     Event *event = NULL;
 
-    while (!event_queue_empty() && get_time() < max_time) {
+    while (!event_queue_empty() && get_time() < config->max_time) {
         event = event_queue_pop_event();
         switch (event->type) {
             case TIMER_INTERUPT:
@@ -72,7 +77,7 @@ void run_simulation(size_t messages, float corruption, float loss, float delay, 
         free(event);
     }
 
-    if (get_time() >= max_time) {
+    if (get_time() >= config->max_time) {
         log_error("Simulation timed out");
     }
 

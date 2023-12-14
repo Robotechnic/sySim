@@ -53,9 +53,17 @@ int main(int argc, char **argv) {
     log_set_quiet(args_info.quiet_flag);
     log_set_color(args_info.color_flag);
 
-    run_simulation(args_info.messages_arg, args_info.corruption_arg, args_info.loss_arg,
-                   args_info.delay_arg, args_info.seed_arg, args_info.bidirectional_flag,
-                   args_info.maxTime_arg);
+	SimulationConfig config = {
+		.messages = args_info.messages_arg,
+		.corruption = args_info.corruption_arg,
+		.bidirectional = args_info.bidirectional_flag,
+		.loss = args_info.loss_arg,
+		.delay = args_info.delay_arg,
+		.max_time = args_info.maxTime_arg,
+		.seed = args_info.seed_arg,
+	};
+
+    run_simulation(&config);
 
     if (log_file != NULL) {
         fclose(log_file);

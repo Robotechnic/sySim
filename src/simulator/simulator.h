@@ -9,17 +9,23 @@
 #include "time/time.h"
 #include <stdlib.h>
 
+typedef struct simulation_config {
+	size_t messages;
+	float corruption;
+	float loss;
+	float delay;
+	int seed;
+	bool bidirectional;
+	double max_time;
+} SimulationConfig;
+
+
 /**
  * @brief Run a new simulation on the given parameters. It uses the function that defines the
  * protocol in protocols
  *
- * @param messages the number of messages to be sent
- * @param corruption the probability of a package being corrupted
- * @param loss the probability of a package being lost
- * @param delay the mean delay to send a package
- * @param seed the random seed
+ * @param config The configuration of the simulation
  */
-void run_simulation(size_t messages, float corruption, float loss, float delay, int seed,
-                    bool bidirectional, double max_time);
+void run_simulation(const SimulationConfig *config);
 
 #endif // SIMULATOR_H
