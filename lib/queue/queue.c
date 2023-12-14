@@ -17,8 +17,8 @@ Queue *queue_new(size_t capacity) {
 }
 
 void queue_free(Queue *queue, queue_free_fn free_fn) {
-    for (size_t i = 0; i < queue->size; i++) {
-        free_fn(queue->queue[i]);
+    for (size_t i = queue->front; i < queue->size; i++) {
+        free_fn(queue->queue[i % queue->capacity]);
     }
     free(queue->queue);
     free(queue);
@@ -46,6 +46,7 @@ void *queue_pop(Queue *queue) {
         exit(1);
     }
     void *element = queue->queue[queue->front];
+	queue->queue[queue->front] = NULL;
     queue->front = (queue->front + 1) % queue->capacity;
     queue->size--;
     return element;
