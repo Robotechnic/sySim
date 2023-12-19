@@ -62,11 +62,14 @@ int main(int argc, char **argv) {
                                .seed = args_info.seed_arg,
                                .check = args_info.check_flag};
 
-    run_simulation(&config);
+    bool simulation_ok = run_simulation(&config);
 
     if (log_file != NULL) {
         fclose(log_file);
     }
     cmdline_parser_free(&args_info);
+	if (!simulation_ok) {
+		return 2;
+	}
     return 0;
 }

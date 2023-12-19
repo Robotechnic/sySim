@@ -27,6 +27,6 @@ typedef struct simulation_config {
  *
  * @param config The configuration of the simulation
  */
-void run_simulation(const SimulationConfig *config);
+bool run_simulation(const SimulationConfig *config);
 
 #endif // SIMULATOR_H

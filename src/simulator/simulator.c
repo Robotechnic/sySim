@@ -129,7 +129,7 @@ bool simulator_to_layer5(const Event *event, bool check, Queue *A_messages, Queu
     return false;
 }
 
-void run_simulation(const SimulationConfig *config) {
+bool run_simulation(const SimulationConfig *config) {
 
     init_simulation(config);
 
@@ -179,4 +179,6 @@ void run_simulation(const SimulationConfig *config) {
     A_free(A_state);
     B_free(B_state);
     eventqueue_free();
+
+	return error;
 }
