@@ -180,5 +180,5 @@ bool run_simulation(const SimulationConfig *config) {
     B_free(B_state);
     eventqueue_free();
 
-	return error;
+    return error;
 }

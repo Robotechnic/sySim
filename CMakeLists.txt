@@ -44,7 +44,8 @@ find_program(GENGETOPT_EXE NAMES "gengetopt")
 if(GENGETOPT_EXE)
 	add_custom_target(
 		genopt
-		COMMAND ${GENGETOPT_EXE} 
+		COMMAND ${GENGETOPT_EXE}
+			--conf-parser 
 			--input=${PROJECT_SOURCE_DIR}/src/sySim.ggo 
 			--file-name=argparse
 			--output-dir=${PROJECT_SOURCE_DIR}/src/argparse

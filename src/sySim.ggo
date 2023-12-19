@@ -6,36 +6,40 @@ It allows to test communication protocols and simulate packet loss and corruptio
 
 section "Simulation parameters"
 
-option "messages"   m "Number of messages to send" int optional default="10"
+option "messages"        m "Number of messages to send" int optional default="10"
 
-option "loss"       l "Packet loss probability" float optional default="0.0"
+option "loss"            l "Packet loss probability" float optional default="0.0"
 
-option "corruption" c "Packet corruption probability" float optional default="0.0"
+option "corruption"      c "Packet corruption probability" float optional default="0.0"
 
-option "delay"      d "Average delay between packets" float optional default="20.0"
+option "delay"           d "Average delay between packets" float optional default="5.0"
 
-option "maxTime"	t "Maximum time to run the simulation" float optional default="100.0"
+option "maxTime"	     t "Maximum time to run the simulation" float optional default="200.0"
 
-option "seed"       s "Seed for the random number generator" int optional default="42"
+option "seed"            s "Seed for the random number generator" int optional default="42"
 
-option "bidirectional" b "If set, the channel will be bidirectional" flag off
+option "bidirectional"   b "If set, the channel will be bidirectional" flag off
 
 section "Logging parameters"
 
-option "loglevel"   L "Logging level" int optional default="2"
+option "loglevel"        L "Logging level" int optional default="2"
 
-option "logfile"    - "If set, the logging will also be written to this file" string optional typestr="filename"
+option "logfile"         - "If set, the logging will also be written to this file" string optional typestr="filename"
 
-option "quiet"      q "If set, the program won't print anything to stdout" flag off
+option "quiet"           q "If set, the program won't print anything to stdout" flag off
 
-option "color"      C "If set, the program will use colors in the output" flag off
+option "color"           k "If set, the program will use colors in the output" flag off
 
 section "Message checking"
 
-option "check"      k "If set, the simulator will check that the payloads are received in the correct order" flag off
+option "check"           - "If set, the simulator will check that the payloads are received in the correct order" flag off
 
-option "continueOnFailure" f "If set, the simulator will continue even if the messages are not received in the correct order" flag off
+option "stop-on-failure" f "If set, the simulator will continue even if the messages are not received in the correct order" flag off
 
 section "Visualization"
 
-option "visualize"  v "If set, the simulator will export an svg file with the visualization of the simulation" string optional typestr="filename"
+option "visualize"       v "If set, the simulator will export an svg file with the visualization of the simulation" string optional typestr="filename"
+
+section "Configuration file"
+
+option "conf-file"       C "If set, the simulator will read the configuration from this file" string optional typestr="filename"

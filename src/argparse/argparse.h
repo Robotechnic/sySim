@@ -49,11 +49,11 @@ struct gengetopt_args_info {
     char *corruption_orig; /**< @brief Packet corruption probability original value given at command
                               line.  */
     const char *corruption_help; /**< @brief Packet corruption probability help description.  */
-    float delay_arg;             /**< @brief Average delay between packets (default='20.0').  */
+    float delay_arg;             /**< @brief Average delay between packets (default='5.0').  */
     char *delay_orig; /**< @brief Average delay between packets original value given at command
                          line.  */
     const char *delay_help;   /**< @brief Average delay between packets help description.  */
-    float maxTime_arg;        /**< @brief Maximum time to run the simulation (default='100.0').  */
+    float maxTime_arg;        /**< @brief Maximum time to run the simulation (default='200.0').  */
     char *maxTime_orig;       /**< @brief Maximum time to run the simulation original value given at
                                  command line.  */
     const char *maxTime_help; /**< @brief Maximum time to run the simulation help description.  */
@@ -80,37 +80,44 @@ struct gengetopt_args_info {
                                description.  */
     int check_flag; /**< @brief If set, the simulator will check that the payloads are received in
                        the correct order (default=off).  */
-    const char *check_help;     /**< @brief If set, the simulator will check that the payloads are
-                                   received in the correct order help description.  */
-    int continueOnFailure_flag; /**< @brief If set, the simulator will continue even if the messages
-                                   are not received in the correct order (default=off).  */
-    const char *
-        continueOnFailure_help; /**< @brief If set, the simulator will continue even if the messages
-                                   are not received in the correct order help description.  */
-    char *visualize_arg;        /**< @brief If set, the simulator will export an svg file with the
-                                   visualization of the simulation.  */
+    const char *check_help;   /**< @brief If set, the simulator will check that the payloads are
+                                 received in the correct order help description.  */
+    int stop_on_failure_flag; /**< @brief If set, the simulator will continue even if the messages
+                                 are not received in the correct order (default=off).  */
+    const char
+        *stop_on_failure_help; /**< @brief If set, the simulator will continue even if the messages
+                                  are not received in the correct order help description.  */
+    char *visualize_arg;       /**< @brief If set, the simulator will export an svg file with the
+                                  visualization of the simulation.  */
     char
         *visualize_orig;        /**< @brief If set, the simulator will export an svg file with the
                                    visualization of the simulation original value given at command line.        */
     const char *visualize_help; /**< @brief If set, the simulator will export an svg file with the
                                    visualization of the simulation help description.  */
+    char *conf_file_arg;  /**< @brief If set, the simulator will read the configuration from this
+                             file.  */
+    char *conf_file_orig; /**< @brief If set, the simulator will read the configuration from this
+                             file original value given at command line.  */
+    const char *conf_file_help; /**< @brief If set, the simulator will read the configuration from
+                                   this file help description.  */
 
-    unsigned int help_given;              /**< @brief Whether help was given.  */
-    unsigned int version_given;           /**< @brief Whether version was given.  */
-    unsigned int messages_given;          /**< @brief Whether messages was given.  */
-    unsigned int loss_given;              /**< @brief Whether loss was given.  */
-    unsigned int corruption_given;        /**< @brief Whether corruption was given.  */
-    unsigned int delay_given;             /**< @brief Whether delay was given.  */
-    unsigned int maxTime_given;           /**< @brief Whether maxTime was given.  */
-    unsigned int seed_given;              /**< @brief Whether seed was given.  */
-    unsigned int bidirectional_given;     /**< @brief Whether bidirectional was given.  */
-    unsigned int loglevel_given;          /**< @brief Whether loglevel was given.  */
-    unsigned int logfile_given;           /**< @brief Whether logfile was given.  */
-    unsigned int quiet_given;             /**< @brief Whether quiet was given.  */
-    unsigned int color_given;             /**< @brief Whether color was given.  */
-    unsigned int check_given;             /**< @brief Whether check was given.  */
-    unsigned int continueOnFailure_given; /**< @brief Whether continueOnFailure was given.  */
-    unsigned int visualize_given;         /**< @brief Whether visualize was given.  */
+    unsigned int help_given;            /**< @brief Whether help was given.  */
+    unsigned int version_given;         /**< @brief Whether version was given.  */
+    unsigned int messages_given;        /**< @brief Whether messages was given.  */
+    unsigned int loss_given;            /**< @brief Whether loss was given.  */
+    unsigned int corruption_given;      /**< @brief Whether corruption was given.  */
+    unsigned int delay_given;           /**< @brief Whether delay was given.  */
+    unsigned int maxTime_given;         /**< @brief Whether maxTime was given.  */
+    unsigned int seed_given;            /**< @brief Whether seed was given.  */
+    unsigned int bidirectional_given;   /**< @brief Whether bidirectional was given.  */
+    unsigned int loglevel_given;        /**< @brief Whether loglevel was given.  */
+    unsigned int logfile_given;         /**< @brief Whether logfile was given.  */
+    unsigned int quiet_given;           /**< @brief Whether quiet was given.  */
+    unsigned int color_given;           /**< @brief Whether color was given.  */
+    unsigned int check_given;           /**< @brief Whether check was given.  */
+    unsigned int stop_on_failure_given; /**< @brief Whether stop-on-failure was given.  */
+    unsigned int visualize_given;       /**< @brief Whether visualize was given.  */
+    unsigned int conf_file_given;       /**< @brief Whether conf-file was given.  */
 };
 
 /** @brief The additional parameters to pass to parser functions */
@@ -221,6 +228,29 @@ void cmdline_parser_init(struct gengetopt_args_info *args_info);
  * @param args_info the structure to deallocate
  */
 void cmdline_parser_free(struct gengetopt_args_info *args_info);
+
+/**
+ * The config file parser (deprecated version)
+ * @param filename the name of the config file
+ * @param args_info the structure where option information will be stored
+ * @param override whether to override possibly already present options
+ * @param initialize whether to initialize the option structure my_args_info
+ * @param check_required whether to check that all required options were provided
+ * @return 0 if everything went fine, NON 0 if an error took place
+ * @deprecated use cmdline_parser_config_file() instead
+ */
+int cmdline_parser_configfile(const char *filename, struct gengetopt_args_info *args_info,
+                              int override, int initialize, int check_required);
+
+/**
+ * The config file parser
+ * @param filename the name of the config file
+ * @param args_info the structure where option information will be stored
+ * @param params additional parameters for the parser
+ * @return 0 if everything went fine, NON 0 if an error took place
+ */
+int cmdline_parser_config_file(const char *filename, struct gengetopt_args_info *args_info,
+                               struct cmdline_parser_params *params);
 
 /**
  * Checks that all the required options were specified
