@@ -7,18 +7,19 @@
 #include "protocol/protocol.h"
 #include "softwareinterface/softwareinterface.h"
 #include "time/time.h"
+#include <assert.h>
 #include <stdlib.h>
 
 typedef struct simulation_config {
-	size_t messages;
-	float corruption;
-	float loss;
-	float delay;
-	int seed;
-	bool bidirectional;
-	double max_time;
+    size_t messages;
+    float corruption;
+    float loss;
+    float delay;
+    int seed;
+    bool bidirectional;
+    double max_time;
+    bool check;
 } SimulationConfig;
-
 
 /**
  * @brief Run a new simulation on the given parameters. It uses the function that defines the

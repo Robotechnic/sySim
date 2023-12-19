@@ -29,3 +29,13 @@ option "logfile"    - "If set, the logging will also be written to this file" st
 option "quiet"      q "If set, the program won't print anything to stdout" flag off
 
 option "color"      C "If set, the program will use colors in the output" flag off
+
+section "Message checking"
+
+option "check"      k "If set, the simulator will check that the payloads are received in the correct order" flag off
+
+option "continueOnFailure" f "If set, the simulator will continue even if the messages are not received in the correct order" flag off
+
+section "Visualization"
+
+option "visualize"  v "If set, the simulator will export an svg file with the visualization of the simulation" string optional typestr="filename"

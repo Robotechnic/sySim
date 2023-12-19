@@ -46,7 +46,7 @@ void *queue_pop(Queue *queue) {
         exit(1);
     }
     void *element = queue->queue[queue->front];
-	queue->queue[queue->front] = NULL;
+    queue->queue[queue->front] = NULL;
     queue->front = (queue->front + 1) % queue->capacity;
     queue->size--;
     return element;
