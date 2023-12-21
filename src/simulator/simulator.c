@@ -1,5 +1,16 @@
 #include "simulator/simulator.h"
 
+typedef struct message_info {
+    size_t messages_sent;
+    size_t messages_incorrect;
+    size_t messages_wrong_order;
+} MessageInfo;
+
+/**
+ * @brief initialize the simulation and the singletons that need to be initialized
+ *
+ * @param config the current simulation configuration
+ */
 void init_simulation(const SimulationConfig *config) {
     srand(config->seed);
 
@@ -97,36 +108,101 @@ void simulator_from_layer3(const Event *event, void *A_state, void *B_state) {
 }
 
 /**
+ * @brief Try to correct the order of the messages
+ *
+ * @param queue the queue of messages
+ * @param data the data of the message to check
+ * @return true if the message was in the queue and was removed
+ */
+bool try_correct_order(Queue *queue, const char *data) {
+    size_t i = queue_size(queue);
+    while (i > 0) {
+        char *message = queue_peek(queue);
+        if (strncmp(message, data, PAYLOAD_SIZE) == 0) {
+            queue_pop(queue);
+            free(message);
+            return true;
+        }
+        queue_pop(queue);
+        queue_push(queue, message);
+        i--;
+    }
+    return false;
+}
+
+/**
  * @brief Check if the message received is the same as the one sent
  *
  * @param event the to layer 5 event to handle
  * @param check if the simulator should check the message
  * @param A_messages the queue of messages sent by A
  * @param B_messages the queue of messages sent by B
+ * @param A_info the messages informations for the side A
+ * @param B_info the messages informations for the side B
  * @return true if the message received is not the right one
  */
-bool simulator_to_layer5(const Event *event, bool check, Queue *A_messages, Queue *B_messages) {
+bool simulator_to_layer5(const Event *event, bool check, Queue *A_messages, Queue *B_messages,
+                         MessageInfo *A_info, MessageInfo *B_info) {
     log_trace("TO_LAYER_5 -> %c", side_to_char(event->sdt));
     log_debug("SIDE '%c' NOTIFIED A NEW MESSAGE: \"%.*s\"", side_to_char(event->sdt), 20,
               event->data.data);
     if (!check) {
         return false;
     }
-    char *data;
+
+    Queue *check_queue;
     if (event->sdt == A) {
-        data = queue_pop(A_messages);
+        check_queue = A_messages;
     } else {
-        data = queue_pop(B_messages);
+        check_queue = B_messages;
     }
+
+    if (queue_empty(check_queue)) {
+        log_error("SIDE '%c' RECEIVED A MESSAGE BEFORE SENDING ONE", side_to_char(event->sdt));
+        return true;
+    }
+
+    char *data = queue_peek(check_queue);
     if (strncmp(data, event->data.data, PAYLOAD_SIZE) != 0) {
         log_error("SIDE '%c' RECEIVED THE WRONG MESSAGE: \"%.*s\"", side_to_char(event->sdt), 20,
                   event->data.data);
+
+        if (try_correct_order(check_queue, event->data.data)) {
+            if (event->sdt == A) {
+                A_info->messages_wrong_order++;
+            } else {
+                B_info->messages_wrong_order++;
+            }
+        } else {
+            if (event->sdt == A) {
+                A_info->messages_incorrect++;
+            } else {
+                B_info->messages_incorrect++;
+            }
+        }
+
         free(data);
         return true;
     }
+    queue_pop(check_queue);
     log_debug("SIDE '%c' RECEIVED THE RIGHT MESSAGE", side_to_char(event->sdt));
     free(data);
     return false;
+}
+
+void print_logs(const MessageInfo *messages, side sdt) {
+    if (messages->messages_sent == 0) {
+        return;
+    }
+    log_info("============== Side %c ==============", side_to_char(sdt));
+    log_info("Messages sent        : %d", messages->messages_sent);
+    log_info("Wrong order messages : %d", messages->messages_wrong_order);
+    log_info("Incorrect messages   : %d", messages->messages_incorrect);
+    float total_incorrect =
+        (float)messages->messages_incorrect + (float)messages->messages_wrong_order;
+	float success_rate = ((float)messages->messages_sent - total_incorrect) / (float)messages->messages_sent;
+    log_info("Success rate         : %.1f%%", success_rate * 100);
+    log_info("====================================");
 }
 
 bool run_simulation(const SimulationConfig *config) {
@@ -139,6 +215,8 @@ bool run_simulation(const SimulationConfig *config) {
 
     Queue *A_messages = NULL;
     Queue *B_messages = NULL;
+    MessageInfo A_info = {0, 0, 0};
+    MessageInfo B_info = {0, 0, 0};
 
     if (config->check) {
         A_messages = queue_new(5);
@@ -154,6 +232,11 @@ bool run_simulation(const SimulationConfig *config) {
                 simulator_timer_interrupt(event, A_state, B_state);
                 break;
             case FROM_LAYER5:
+                if (event->sdt == A) {
+                    A_info.messages_sent++;
+                } else {
+                    B_info.messages_sent++;
+                }
                 simulator_from_layer5(event, A_state, B_state, config->check, A_messages,
                                       B_messages);
                 break;
@@ -161,7 +244,8 @@ bool run_simulation(const SimulationConfig *config) {
                 simulator_from_layer3(event, A_state, B_state);
                 break;
             case TO_LAYER_5:
-                error = simulator_to_layer5(event, config->check, A_messages, B_messages);
+                error = simulator_to_layer5(event, config->check, A_messages, B_messages, &A_info,
+                                            &B_info);
                 break;
         }
         free(event);
@@ -175,6 +259,9 @@ bool run_simulation(const SimulationConfig *config) {
         queue_free(A_messages, free);
         queue_free(B_messages, free);
     }
+
+    print_logs(&A_info, A);
+    print_logs(&B_info, B);
 
     A_free(A_state);
     B_free(B_state);
