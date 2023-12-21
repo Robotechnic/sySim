@@ -207,7 +207,7 @@ void B_recv(void *state, const Packet *packet) {
     input(state, packet);
 }
 
-void A_timer_inerrupt(void *state) {
+void A_timer_interrupt(void *state) {
     timer_interrupt(state);
 }
 

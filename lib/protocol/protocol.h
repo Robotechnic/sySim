@@ -69,7 +69,7 @@ void B_recv(void *state, const Packet *packet);
  *
  * @param state the current state
  */
-void A_timer_inerrupt(void *state);
+void A_timer_interrupt(void *state);
 
 /**
  * @brief This function is called when the timeout of the B side is reached.
