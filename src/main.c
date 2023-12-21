@@ -105,7 +105,8 @@ int main(int argc, char **argv) {
                                .delay = args_info.delay_arg,
                                .max_time = args_info.maxTime_arg,
                                .seed = args_info.seed_arg,
-                               .check = args_info.check_flag};
+                               .check = args_info.check_flag,
+							   .ignore_failure = args_info.ignore_failure_flag};
 
     bool simulation_ok = run_simulation(&config);
 

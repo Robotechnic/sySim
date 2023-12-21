@@ -255,6 +255,9 @@ bool run_simulation(const SimulationConfig *config) {
                 break;
         }
         free(event);
+		if (config->ignore_failure) {
+			error = false;
+		}
     }
 
     if (get_time() >= config->max_time) {

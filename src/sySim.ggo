@@ -34,7 +34,7 @@ section "Message checking"
 
 option "check"           - "If set, the simulator will check that the payloads are received in the correct order" flag off
 
-option "stop-on-failure" f "If set, the simulator will continue even if the messages are not received in the correct order" flag off
+option "ignore-failure"  f "If set, the simulator will continue even if the messages are not received in the correct order" flag off
 
 section "Visualization"
 

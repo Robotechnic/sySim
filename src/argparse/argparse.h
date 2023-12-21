@@ -71,8 +71,8 @@ struct gengetopt_args_info
   const char *color_help; /**< @brief If set, the program will use colors in the output help description.  */
   int check_flag;	/**< @brief If set, the simulator will check that the payloads are received in the correct order (default=off).  */
   const char *check_help; /**< @brief If set, the simulator will check that the payloads are received in the correct order help description.  */
-  int stop_on_failure_flag;	/**< @brief If set, the simulator will continue even if the messages are not received in the correct order (default=off).  */
-  const char *stop_on_failure_help; /**< @brief If set, the simulator will continue even if the messages are not received in the correct order help description.  */
+  int ignore_failure_flag;	/**< @brief If set, the simulator will continue even if the messages are not received in the correct order (default=off).  */
+  const char *ignore_failure_help; /**< @brief If set, the simulator will continue even if the messages are not received in the correct order help description.  */
   char * visualize_arg;	/**< @brief If set, the simulator will export an svg file with the visualization of the simulation.  */
   char * visualize_orig;	/**< @brief If set, the simulator will export an svg file with the visualization of the simulation original value given at command line.  */
   const char *visualize_help; /**< @brief If set, the simulator will export an svg file with the visualization of the simulation help description.  */
@@ -94,7 +94,7 @@ struct gengetopt_args_info
   unsigned int quiet_given ;	/**< @brief Whether quiet was given.  */
   unsigned int color_given ;	/**< @brief Whether color was given.  */
   unsigned int check_given ;	/**< @brief Whether check was given.  */
-  unsigned int stop_on_failure_given ;	/**< @brief Whether stop-on-failure was given.  */
+  unsigned int ignore_failure_given ;	/**< @brief Whether ignore-failure was given.  */
   unsigned int visualize_given ;	/**< @brief Whether visualize was given.  */
   unsigned int conf_file_given ;	/**< @brief Whether conf-file was given.  */
 

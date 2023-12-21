@@ -51,7 +51,7 @@ const char *gengetopt_args_info_help[] = {
   "  -k, --color               If set, the program will use colors in the output\n                              (default=off)",
   "\nMessage checking:",
   "      --check               If set, the simulator will check that the payloads\n                              are received in the correct order  (default=off)",
-  "  -f, --stop-on-failure     If set, the simulator will continue even if the\n                              messages are not received in the correct order\n                              (default=off)",
+  "  -f, --ignore-failure      If set, the simulator will continue even if the\n                              messages are not received in the correct order\n                              (default=off)",
   "\nVisualization:",
   "  -v, --visualize=filename  If set, the simulator will export an svg file with\n                              the visualization of the simulation",
   "\nConfiguration file:",
@@ -120,7 +120,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->quiet_given = 0 ;
   args_info->color_given = 0 ;
   args_info->check_given = 0 ;
-  args_info->stop_on_failure_given = 0 ;
+  args_info->ignore_failure_given = 0 ;
   args_info->visualize_given = 0 ;
   args_info->conf_file_given = 0 ;
 }
@@ -149,7 +149,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->quiet_flag = 0;
   args_info->color_flag = 0;
   args_info->check_flag = 0;
-  args_info->stop_on_failure_flag = 0;
+  args_info->ignore_failure_flag = 0;
   args_info->visualize_arg = NULL;
   args_info->visualize_orig = NULL;
   args_info->conf_file_arg = NULL;
@@ -176,7 +176,7 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->quiet_help = gengetopt_args_info_help[13] ;
   args_info->color_help = gengetopt_args_info_help[14] ;
   args_info->check_help = gengetopt_args_info_help[16] ;
-  args_info->stop_on_failure_help = gengetopt_args_info_help[17] ;
+  args_info->ignore_failure_help = gengetopt_args_info_help[17] ;
   args_info->visualize_help = gengetopt_args_info_help[19] ;
   args_info->conf_file_help = gengetopt_args_info_help[21] ;
   
@@ -339,8 +339,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "color", 0, 0 );
   if (args_info->check_given)
     write_into_file(outfile, "check", 0, 0 );
-  if (args_info->stop_on_failure_given)
-    write_into_file(outfile, "stop-on-failure", 0, 0 );
+  if (args_info->ignore_failure_given)
+    write_into_file(outfile, "ignore-failure", 0, 0 );
   if (args_info->visualize_given)
     write_into_file(outfile, "visualize", args_info->visualize_orig, 0);
   if (args_info->conf_file_given)
@@ -623,7 +623,7 @@ cmdline_parser_internal (
         { "quiet",	0, NULL, 'q' },
         { "color",	0, NULL, 'k' },
         { "check",	0, NULL, 0 },
-        { "stop-on-failure",	0, NULL, 'f' },
+        { "ignore-failure",	0, NULL, 'f' },
         { "visualize",	1, NULL, 'v' },
         { "conf-file",	1, NULL, 'C' },
         { 0,  0, 0, 0 }
@@ -762,9 +762,9 @@ cmdline_parser_internal (
         case 'f':	/* If set, the simulator will continue even if the messages are not received in the correct order.  */
         
         
-          if (update_arg((void *)&(args_info->stop_on_failure_flag), 0, &(args_info->stop_on_failure_given),
-              &(local_args_info.stop_on_failure_given), optarg, 0, 0, ARG_FLAG,
-              check_ambiguity, override, 1, 0, "stop-on-failure", 'f',
+          if (update_arg((void *)&(args_info->ignore_failure_flag), 0, &(args_info->ignore_failure_given),
+              &(local_args_info.ignore_failure_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "ignore-failure", 'f',
               additional_error))
             goto failure;
         
