@@ -181,8 +181,6 @@ bool simulator_to_layer5(const Event *event, bool check, Queue *A_messages, Queu
                 B_info->messages_incorrect++;
             }
         }
-
-        free(data);
         return true;
     } else {
 		if (event->sdt == A) {
