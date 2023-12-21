@@ -10,6 +10,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * @brief convert a side to it's char representation
+ *
+ * @param sdt the side to represent
+ * @return char the side representation
+ */
 char side_to_char(side sdt);
 
 /**

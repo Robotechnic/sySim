@@ -200,7 +200,8 @@ void print_logs(const MessageInfo *messages, side sdt) {
     log_info("Incorrect messages   : %d", messages->messages_incorrect);
     float total_incorrect =
         (float)messages->messages_incorrect + (float)messages->messages_wrong_order;
-	float success_rate = ((float)messages->messages_sent - total_incorrect) / (float)messages->messages_sent;
+    float success_rate =
+        ((float)messages->messages_sent - total_incorrect) / (float)messages->messages_sent;
     log_info("Success rate         : %.1f%%", success_rate * 100);
     log_info("====================================");
 }

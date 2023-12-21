@@ -14,7 +14,7 @@ include(lib/CMakeLists.txt)
 
 # remove compiler warnings from argparse.c
 set_source_files_properties(
-	src/argparse/argparse.c
+	${PROJECT_SOURCE_DIR}/src/argparse/argparse.c
 	PROPERTIES
 		COMPILE_FLAGS "-w"
 )
@@ -28,8 +28,8 @@ if(CLANG_FORMAT_EXE)
 		format
 		COMMAND ${CLANG_FORMAT_EXE} -i -style=file
 			${PROJECT_SOURCE_DIR}/src/*.c
-			${PROJECT_SOURCE_DIR}/src/*/*.c
-			${PROJECT_SOURCE_DIR}/src/*/*.h 
+			${PROJECT_SOURCE_DIR}/src/simulator/*.c
+			${PROJECT_SOURCE_DIR}/src/simulator/*.h 
 			${PROJECT_SOURCE_DIR}/lib/*/*.c
 			${PROJECT_SOURCE_DIR}/lib/*/*.h
 			${PROJECT_SOURCE_DIR}/protocols/*.c
@@ -42,8 +42,10 @@ endif()
 # gengetopt support
 find_program(GENGETOPT_EXE NAMES "gengetopt")
 if(GENGETOPT_EXE)
-	add_custom_target(
-		genopt
+	add_custom_command(
+		OUTPUT
+			${PROJECT_SOURCE_DIR}/src/argparse/argparse.c
+			${PROJECT_SOURCE_DIR}/src/argparse/argparse.h
 		COMMAND ${GENGETOPT_EXE}
 			--conf-parser 
 			--input=${PROJECT_SOURCE_DIR}/src/sySim.ggo 
@@ -51,12 +53,9 @@ if(GENGETOPT_EXE)
 			--output-dir=${PROJECT_SOURCE_DIR}/src/argparse
 		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 		DEPENDS ${PROJECT_SOURCE_DIR}/src/sySim.ggo
+		MAIN_DEPENDENCY ${PROJECT_SOURCE_DIR}/src/sySim.ggo
 		SOURCES ${PROJECT_SOURCE_DIR}/src/sySim.ggo
 	)
-	foreach(pro ${protocolsNames})
-		add_dependencies(${pro} genopt)
-	endforeach()
 else()
 	message(STATUS "gengetopt not found.")
 endif()
-
