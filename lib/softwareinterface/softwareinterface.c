@@ -43,13 +43,14 @@ void tolayer3(Packet *packet) {
     if (random_less_than(loss)) {
         log_debug("PACKET BEING LOST");
         free(packet);
+		new_failed_from_layer3_event(5 + RANDRANGE(-2, 10), OTHER_SIDE(current_side));
         return;
     }
     if (random_less_than(corruption)) {
         log_debug("PACKET BEING CORRUPTED");
         corrupt(packet);
     }
-    new_from_layer3_event(5 + RANDRANGE(-2, 10), current_side == A ? B : A, packet);
+    new_from_layer3_event(5 + RANDRANGE(-2, 10), OTHER_SIDE(current_side), packet);
 }
 
 void tolayer5(const Payload *message) {

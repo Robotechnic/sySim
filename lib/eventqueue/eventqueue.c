@@ -54,6 +54,16 @@ void new_from_layer3_event(double delay, side sdt, Packet *data) {
     priority_queue_push(event_queue, event);
 }
 
+void new_failed_from_layer3_event(double delay, side sdt) {
+	log_trace("FAILED LAYER_3 TO %c in %lf", side_to_char(sdt), delay);
+	Event *event = malloc(sizeof(Event));
+	event->type = FAILED_FROM_LAYER_3;
+	event->activation_time = delay + get_time();
+	event->sdt = sdt;
+	event->packet = NULL;
+	priority_queue_push(event_queue, event);
+}
+
 void new_timeout_event(double delay, side sdt) {
     log_trace("TIMEOUT EVENT FROM %c in %lf", side_to_char(sdt), delay);
     Event *event = malloc(sizeof(Event));

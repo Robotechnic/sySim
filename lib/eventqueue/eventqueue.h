@@ -6,7 +6,7 @@
 #include "time/time.h"
 
 typedef struct event {
-    enum { TIMER_INTERUPT, FROM_LAYER5, FROM_LAYER3, TO_LAYER_5 } type;
+    enum { TIMER_INTERUPT, FROM_LAYER5, FROM_LAYER3, FAILED_FROM_LAYER_3, TO_LAYER_5 } type;
     double activation_time;
     side sdt;
     union {
@@ -45,6 +45,14 @@ void new_from_layer5_event(double delay, side sdt, Payload data);
  * @param data the event data
  */
 void new_from_layer3_event(double delay, side sdt, Packet *data);
+
+/**
+ * @brief push a new failed receive event to the event queue
+ *
+ * @param delay the delay before the event is activated
+ * @param sdt the even receiver
+ */
+void new_failed_from_layer3_event(double delay, side sdt);
 
 /**
  * @brief push a new timeout event to the event queue

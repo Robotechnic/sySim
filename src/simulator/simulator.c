@@ -27,7 +27,7 @@ void init_simulation(const SimulationConfig *config) {
         Payload payload = payload_new(message);
         new_from_layer5_event((float)i * config->delay, sdt, payload);
         if (config->bidirectional) {
-            sdt = (sdt == A) ? B : A;
+            sdt = OTHER_SIDE(sdt);
         }
     }
 
@@ -251,6 +251,9 @@ bool run_simulation(const SimulationConfig *config) {
                 error = simulator_to_layer5(event, config->check, A_messages, B_messages, &A_info,
                                             &B_info);
                 break;
+			case FAILED_FROM_LAYER_3:
+				// TODO, render the failed event if needed
+				break;
         }
         free(event);
         if (config->ignore_failure) {
