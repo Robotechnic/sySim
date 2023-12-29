@@ -1,6 +1,6 @@
 #include "protocol/protocol.h"
 
-DEFINE_PACKET(TestPacket,)
+DEFINE_PACKET(TestPacket, )
 
 typedef struct test_state {
     int test;
@@ -27,7 +27,7 @@ void B_send(void *state, Payload payload) {
 }
 
 void A_recv(void *state, const Packet *packet) {
-	log_error("A_recv function should never be called");
+    log_error("A_recv function should never be called");
     (void)state;
     (void)packet;
 }

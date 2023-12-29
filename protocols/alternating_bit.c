@@ -215,14 +215,10 @@ void B_timer_interrupt(void *state) {
     timer_interrupt(state);
 }
 
-void pf(void *state) {
-    package_free(state);
-}
-
 void A_free(void *state) {
     State *s = (State *)state;
-    queue_free(s->message_queue, pf);
-    package_free((Packet *)s->current_packet);
+    queue_free(s->message_queue, free);
+    free((Packet *)s->current_packet);
     free(state);
 }
 

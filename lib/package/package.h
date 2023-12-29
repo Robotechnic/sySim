@@ -37,15 +37,35 @@ struct packet_t {
 
 typedef struct packet_t Packet;
 
-Packet *package_new(int id, Payload *payload);
-void package_free(Packet *package);
-
+/**
+ * @brief Create a new Payload object with the given data
+ *
+ * @param data the data to be copied to the payload
+ * @return Payload the new payload
+ */
 Payload payload_new(const char data[PAYLOAD_SIZE]);
+
+/**
+ * @brief Encode an integer into a payload
+ *
+ * @param value the integer to be encoded
+ * @return Payload the encoded payload
+ */
 Payload encode_int(int value);
+
+/**
+ * @brief Create an empty payload
+ *
+ * @return Payload the empty payload
+ */
 Payload enpty_payload();
 
+/**
+ * @brief Decode an integer from a payload
+ *
+ * @param payload the payload to be decoded
+ * @return int the decoded integer
+ */
 int decode_int(const Payload *payload);
-
-void payload_free(Payload *payload);
 
 #endif // PACKAGE_H

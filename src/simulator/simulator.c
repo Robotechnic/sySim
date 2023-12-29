@@ -2,7 +2,7 @@
 
 typedef struct message_info {
     size_t messages_sent;
-	size_t messages_correct;
+    size_t messages_correct;
     size_t messages_incorrect;
     size_t messages_wrong_order;
 } MessageInfo;
@@ -183,12 +183,12 @@ bool simulator_to_layer5(const Event *event, bool check, Queue *A_messages, Queu
         }
         return true;
     } else {
-		if (event->sdt == A) {
-			A_info->messages_correct++;
-		} else {
-			B_info->messages_correct++;
-		}
-	}
+        if (event->sdt == A) {
+            A_info->messages_correct++;
+        } else {
+            B_info->messages_correct++;
+        }
+    }
     queue_pop(check_queue);
     log_debug("SIDE '%c' RECEIVED THE RIGHT MESSAGE", side_to_char(event->sdt));
     free(data);
@@ -201,7 +201,7 @@ void print_logs(const MessageInfo *messages, side sdt) {
     }
     log_info("============== Side %c ==============", side_to_char(sdt));
     log_info("Messages sent        : %d", messages->messages_sent);
-	log_info("Correct messages     : %d", messages->messages_correct);
+    log_info("Correct messages     : %d", messages->messages_correct);
     log_info("Wrong order messages : %d", messages->messages_wrong_order);
     log_info("Incorrect messages   : %d", messages->messages_incorrect);
     float success_rate = (float)messages->messages_correct / (float)messages->messages_sent;
@@ -253,9 +253,9 @@ bool run_simulation(const SimulationConfig *config) {
                 break;
         }
         free(event);
-		if (config->ignore_failure) {
-			error = false;
-		}
+        if (config->ignore_failure) {
+            error = false;
+        }
     }
 
     if (get_time() >= config->max_time) {

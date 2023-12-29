@@ -2,8 +2,7 @@
 
 Payload payload_new(const char data[PAYLOAD_SIZE]) {
     Payload payload;
-    memset(payload.data, 0, PAYLOAD_SIZE);
-    memcpy(payload.data, data, strlen(data));
+    memcpy(payload.data, data, PAYLOAD_SIZE);
     return payload;
 }
 
@@ -26,12 +25,4 @@ int decode_int(const Payload *payload) {
         value |= (payload->data[i] & 0xFF) << (i * 8);
     }
     return value;
-}
-
-void payload_free(Payload *payload) {
-    free(payload);
-}
-
-void package_free(Packet *package) {
-    free(package);
 }

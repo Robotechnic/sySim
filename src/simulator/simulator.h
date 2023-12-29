@@ -19,7 +19,7 @@ typedef struct simulation_config {
     bool bidirectional;
     double max_time;
     bool check;
-	bool ignore_failure;
+    bool ignore_failure;
 } SimulationConfig;
 
 /**
