@@ -88,6 +88,10 @@ int main(int argc, char **argv) {
         parse_config_file(DEFAULT_CONFIG_FILE, &args_info);
     }
 
+	if (args_info.visualize_arg) {
+		log_warn("Visualization is not implemented yet");
+	}
+
     FILE *log_file = NULL;
     if (!check_args(&args_info, log_file)) {
         cmdline_parser_free(&args_info);

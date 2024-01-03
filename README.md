@@ -46,6 +46,9 @@
 
 ### Visualization
 
+> [!INFO]
+> Not yet implemented
+
 | name | short name | description | type | default |
 | :--: | :--------: | :---------: | :--: | :-----: |
 | visualize | v | If set, the simulator will export an svg file with the visualization of the simulation | string |
